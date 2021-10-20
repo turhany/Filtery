@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filtery", "src\Filtery\Filtery.csproj", "{ACA2F626-F0BF-435F-8315-0B3F62A87BAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filtery.Samples", "samples\Filtery.Samples\Filtery.Samples.csproj", "{5F6971B7-A76F-4234-BF4A-865ADF1077E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{ACA2F626-F0BF-435F-8315-0B3F62A87BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACA2F626-F0BF-435F-8315-0B3F62A87BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACA2F626-F0BF-435F-8315-0B3F62A87BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F6971B7-A76F-4234-BF4A-865ADF1077E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F6971B7-A76F-4234-BF4A-865ADF1077E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F6971B7-A76F-4234-BF4A-865ADF1077E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F6971B7-A76F-4234-BF4A-865ADF1077E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

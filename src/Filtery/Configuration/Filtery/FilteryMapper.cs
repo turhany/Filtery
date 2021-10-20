@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Filtery.Exceptions;
 
-namespace Filtery.Configuration
+namespace Filtery.Configuration.Filtery
 {
     public class FilteryMapper<TEntity>
     {
