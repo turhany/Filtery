@@ -20,7 +20,7 @@ namespace Filtery.Samples
             service.AddFilteryConfiguration(new FilteryConfiguration
             {
                 DefaultPageSize = 10,
-                RegisterMappingsFromAssemblyContaining = typeof(UserFilteryMappings)
+                RegisterMappingsFromAssembly = typeof(UserFilteryMappings).Assembly
             });
             
             var userList = new List<User>();
