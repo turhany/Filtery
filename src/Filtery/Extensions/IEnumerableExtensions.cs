@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Filtery.Configuration.Filtery;
 using Filtery.Models;
 
 namespace Filtery.Extensions
@@ -23,6 +24,10 @@ namespace Filtery.Extensions
             
             //Merge Queries
             
+            return new List<T>();
+        }
+        public static IEnumerable<T> BuildFiltery<T>(this IList<T> list, IFilteryMapping<T> mapping,FilteryRequest filteryRequest)
+        {
             return new List<T>();
         }
     }
