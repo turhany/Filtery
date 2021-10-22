@@ -90,4 +90,4 @@ var response = userList.BuildFiltery(new FilteryRequest
 ### Release Notes
 
 #### 1.0.0
-* Broken releases
+* Base releases
