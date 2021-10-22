@@ -30,61 +30,61 @@ Simple and Extensible Filtering, Sorting and Paging  library.
 DI Registration:
 
 ```cs
-    public void ConfigureServices(IServiceCollection services)
+public void ConfigureServices(IServiceCollection services)
+{
+    service.AddFilteryConfiguration(new FilteryConfiguration
     {
-        service.AddFilteryConfiguration(new FilteryConfiguration
-        {
-            DefaultPageSize = 10,
-            RegisterMappingsFromAssembly = typeof(UserFilteryMappings).Assembly
-        });
-    }
+        DefaultPageSize = 10,
+        RegisterMappingsFromAssembly = typeof(UserFilteryMappings).Assembly
+    });
+}
 ```
 
 Sample Model:
 
 ```cs
-    public class User
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int Age { get; set; }
-    }
+public class User
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int Age { get; set; }
+}
 ```
 
 Filter Mapping File:
 
 ```cs
-    public class UserFilteryMappings : IFilteryMapping<User>
+public class UserFilteryMappings : IFilteryMapping<User>
+{
+    public void FilteryMappings(FilteryMapper<User> mapper)
     {
-        public void FilteryMappings(FilteryMapper<User> mapper)
-        {
-            mapper.Name("name").Property(p => p.FirstName);
-            mapper.Name("last").Property(p => p.LastName);
-        }
+        mapper.Name("name").Property(p => p.FirstName);
+        mapper.Name("last").Property(p => p.LastName);
     }
+}
 ```
 
 Usage:
 
 ```cs
-    var userList = new List<User>();
-    userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
-    userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
+var userList = new List<User>();
+userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
+userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
 
-    var response = userList.BuildFiltery(new FilteryRequest
+var response = userList.BuildFiltery(new FilteryRequest
+{
+    AndFilters = new List<FilterItem>
     {
-        AndFilters = new List<FilterItem>
-        {
-            new FilterItem{TargetFieldName = "name", Value = "Ça",Operation = FilterOperation.Contains},              
-            new FilterItem{TargetFieldName = "last", Value = "Yıl",Operation = FilterOperation.Contains}                
-        },
-        OrderOperations = new Dictionary<string, OrderOperation>()
-        {
-            {"name", OrderOperation.Asc}
-        },
-        PageNumber = 1,
-        PageSize = 2
-    });
+        new FilterItem{TargetFieldName = "name", Value = "Ça",Operation = FilterOperation.Contains},              
+        new FilterItem{TargetFieldName = "last", Value = "Yıl",Operation = FilterOperation.Contains}                
+    },
+    OrderOperations = new Dictionary<string, OrderOperation>()
+    {
+        {"name", OrderOperation.Asc}
+    },
+    PageNumber = 1,
+    PageSize = 2
+});
 ```
 
 ### Release Notes
