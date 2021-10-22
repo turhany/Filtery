@@ -22,6 +22,10 @@ Simple and Extensible Filtering, Sorting and Paging  library.
 - Include
 - Between
 
+#### Supported Order Operations:
+- Asc (Ascending)
+- Desc (Descending)
+
 #### Usages:
 DI Registration:
 
