@@ -2,7 +2,7 @@
 
 ![alt tag](/img/filtery.png)  
 
-Simple and Extensible Filtering, Sorting and Paging  library.
+Simple Filtering, Sorting and Paging  library.
 
 [![NuGet version](https://badge.fury.io/nu/Filtery.svg)](https://badge.fury.io/nu/Filtery)  ![Nuget](https://img.shields.io/nuget/dt/Filtery)
 
