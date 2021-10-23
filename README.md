@@ -7,7 +7,7 @@ Simple and Extensible Filtering, Sorting and Paging  library.
 [![NuGet version](https://badge.fury.io/nu/Filtery.svg)](https://badge.fury.io/nu/Filtery)  ![Nuget](https://img.shields.io/nuget/dt/Filtery)
 
 #### Features:
-- MVC Service Collection registeration support
+- Service Collection registeration support
 - Custom filter "Key" and "Property" mapping for search and order
 - Can manage string query CaseSensitive operation (Can set globaly or per FilterItem)
 - Also support paging
