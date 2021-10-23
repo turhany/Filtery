@@ -27,12 +27,12 @@ namespace Filtery.Samples
             userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
             userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
 
-            var response = userList.BuildFiltery(new FilteryRequest
+            var filteryQuery = new FilteryRequest
             {
                 AndFilters = new List<FilterItem>
                 {
-                    new FilterItem{TargetFieldName = "name", Value = "Ça",Operation = FilterOperation.Contains},              
-                    new FilterItem{TargetFieldName = "last", Value = "Yıl",Operation = FilterOperation.Contains}                
+                    new FilterItem {TargetFieldName = "name", Value = "Ça", Operation = FilterOperation.Contains},
+                    new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains}
                 },
                 OrderOperations = new Dictionary<string, OrderOperation>()
                 {
@@ -40,7 +40,13 @@ namespace Filtery.Samples
                 },
                 PageNumber = 1,
                 PageSize = 2
-            });
+            };
+            
+            var response = userList.BuildFiltery(filteryQuery);
+            
+            //Or you can give mapping file while filter operation
+            
+            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
             
             Console.WriteLine("Hello World!");
         }
