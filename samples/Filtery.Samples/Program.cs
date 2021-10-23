@@ -47,7 +47,7 @@ namespace Filtery.Samples
             
             //Or you can give mapping file while filter operation
             
-            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+            //var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
             
             Console.WriteLine("Hello World!");
         }
