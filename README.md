@@ -1,6 +1,6 @@
 #   **Filtery**
 
-![alt tag](https://raw.githubusercontent.com/turhany/Filtery/main/img/monolithicsync.png)  
+![alt tag](/img/Filtery.png)  
 
 Simple and Extensible Filtering, Sorting and Paging  library.
 
