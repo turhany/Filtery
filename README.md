@@ -1,6 +1,6 @@
 #   **Filtery**
 
-![alt tag](/img/Filtery.png)  
+![alt tag](https://raw.githubusercontent.com/turhany/Filtery/mai/img/filtery.png)  
 
 Simple and Extensible Filtering, Sorting and Paging  library.
 
