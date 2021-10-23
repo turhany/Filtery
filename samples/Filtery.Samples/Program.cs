@@ -20,6 +20,7 @@ namespace Filtery.Samples
             service.AddFilteryConfiguration(new FilteryConfiguration
             {
                 DefaultPageSize = 10,
+                CaseSensitive = true,
                 RegisterMappingsFromAssembly = typeof(UserFilteryMappings).Assembly
             });
             
@@ -31,7 +32,7 @@ namespace Filtery.Samples
             {
                 AndFilters = new List<FilterItem>
                 {
-                    new FilterItem {TargetFieldName = "name", Value = "Ça", Operation = FilterOperation.Contains},
+                    new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains, CaseSensitive = false},
                     new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains}
                 },
                 OrderOperations = new Dictionary<string, OrderOperation>()

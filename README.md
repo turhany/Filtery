@@ -9,6 +9,7 @@ Simple and Extensible Filtering, Sorting and Paging  library.
 #### Features:
 - MVC Service Collection registeration support
 - Custom filter "Key" and "Property" mapping for search and order
+- Can manage string query CaseSensitive operation (Can set globaly or per FilterItem)
 - Also support paging
 
 #### Supported Filter Operations:
@@ -35,6 +36,7 @@ public void ConfigureServices(IServiceCollection services)
     service.AddFilteryConfiguration(new FilteryConfiguration
     {
         DefaultPageSize = 10,
+        CaseSensitive = true,
         RegisterMappingsFromAssembly = typeof(UserFilteryMappings).Assembly
     });
 }
@@ -75,7 +77,7 @@ var filteryQuery = new FilteryRequest
 {
     AndFilters = new List<FilterItem>
     {
-        new FilterItem {TargetFieldName = "name", Value = "Ça", Operation = FilterOperation.Contains},
+        new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains, CaseSensitive = false},
         new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains}
     },
     OrderOperations = new Dictionary<string, OrderOperation>()
