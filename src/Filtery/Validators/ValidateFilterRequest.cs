@@ -24,8 +24,8 @@ namespace Filtery.Validators
             }
             
             var mappings = mappingConfiguration
-                .GetFiledValue<FilteryMapper<T>>(FilteryConstant.MapperFiledName)
-                .GetFiledValue<Dictionary<string, Expression<Func<T, object>>>>(FilteryConstant.MappingListFieldName);
+                .GetFieldValue<FilteryMapper<T>>(FilteryConstant.MapperFiledName)
+                .GetFieldValue<Dictionary<string, Expression<Func<T, object>>>>(FilteryConstant.MappingListFieldName);
             
             foreach (var filterItem in filteryRequest.AndFilters)
             {

@@ -6,21 +6,21 @@ namespace Filtery.Extensions
 {
     internal static class ObjectExtensions
     {
-        public static T GetFiledValue<T>(this object item, string fieldName)
+        public static T GetFieldValue<T>(this object item, string fieldName)
         {
-            var fieldInfo = item.GetFiledInfo(fieldName);
+            var fieldInfo = item.GetFieldInfo(fieldName);
             return (T)fieldInfo.GetValue(item);
         }
         
-        public static T SetFiledValue<T>(this object item, string fieldName, T value)
+        public static T SetFieldValue<T>(this object item, string fieldName, T value)
         {
-            var fieldInfo = item.GetFiledInfo(fieldName);
+            var fieldInfo = item.GetFieldInfo(fieldName);
             fieldInfo.SetValue(item, value);
 
             return value;
         }
 
-        private static FieldInfo GetFiledInfo(this object item, string fieldName)
+        public static FieldInfo GetFieldInfo(this object item, string fieldName)
         {
             if (item == null)
             {
