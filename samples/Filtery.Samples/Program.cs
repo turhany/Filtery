@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using Filtery.Configuration.Startup;
+using System.Collections.Generic; 
 using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Filter;
 using Filtery.Models.Order;
 using Filtery.Samples.Mappings;
-using Filtery.Samples.Model;
-using Microsoft.Extensions.DependencyInjection;
+using Filtery.Samples.Model; 
 
 namespace Filtery.Samples
 {
@@ -15,15 +13,6 @@ namespace Filtery.Samples
     {
         static void Main(string[] args)
         {
-            IServiceCollection service = null;
-
-            service.AddFilteryConfiguration(new FilteryConfiguration
-            {
-                DefaultPageSize = 10,
-                CaseSensitive = true,
-                RegisterMappingsFromAssembly = typeof(UserFilteryMappings).Assembly
-            });
-            
             var userList = new List<User>();
             userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
             userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
@@ -43,11 +32,7 @@ namespace Filtery.Samples
                 PageSize = 2
             };
             
-            var response = userList.BuildFiltery(filteryQuery);
-            
-            //Or you can give mapping file while filter operation
-            
-            //var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
             
             Console.WriteLine("Hello World!");
         }

@@ -2,7 +2,7 @@
 
 namespace Filtery.Exceptions
 {
-    public class NotConfiguredFilterException : Exception
+    internal class NullFilterRequestException :Exception
     {
         
     }

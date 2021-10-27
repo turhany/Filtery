@@ -2,7 +2,7 @@
 {
     public enum OrderOperation
     {
-        Asc = 0,
-        Desc = 1
+        Ascending = 0,
+        Descending = 1
     }
 }

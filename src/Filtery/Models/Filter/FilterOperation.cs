@@ -7,9 +7,11 @@
         Contains = 2,
         GreaterThan = 3,
         LowerThan = 4,
-        GreaterThanAndEqual = 5,
-        LowerThanAndEqual = 6,
+        GreaterThanOrEqual = 5,
+        LowerThanOrEqual = 6,
         Include = 7,
-        Between = 8
+        Between = 8,
+        StartsWith = 9,
+        EndsWith = 10
     }
 }

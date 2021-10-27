@@ -15,6 +15,10 @@ namespace Filtery.Configuration.Filtery
             {
                 _map.Add(name, null);
             }
+            else
+            {
+                throw new MultipleFilterItemConfigurationException($"Multiple filter key detected for \"{name}\"");
+            }
 
             return new PropertyMap(name,this);
         }
@@ -26,15 +30,15 @@ namespace Filtery.Configuration.Filtery
             
             public PropertyMap(string name,FilteryMapper<TEntity> filteryMapper)
             {
-                _name = name;
+                _name = name.ToLowerInvariant();
                 _filteryMapper = filteryMapper;
             }
 
             public void Property(Expression<Func<TEntity, object>> expression)
             {
-                if (_filteryMapper._map.ContainsKey(_name))
+                if (!_filteryMapper._map.ContainsKey(_name))
                 {
-                    throw new MultipleFilterItemConfigurationException($"Multiple filter key detected for \"{_name}\"");
+                    throw new NotConfiguredFilterMappingException($"Filter configuration not found for Key: \"{_name}\"");
                 }
 
                 _filteryMapper._map[_name] = expression;

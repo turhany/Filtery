@@ -2,8 +2,11 @@
 
 namespace Filtery.Exceptions
 {
-    public class NotConfiguredOrderException :Exception
+    internal class NotConfiguredOrderException :Exception
     {
-        
+        public NotConfiguredOrderException(string message) : base(message)
+        {
+            
+        }
     }
 }

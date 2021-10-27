@@ -1,34 +1,19 @@
 ﻿using System.Collections.Generic;
+using Filtery.Builders;
 using Filtery.Configuration.Filtery;
 using Filtery.Models;
+using Filtery.Validators;
 
 namespace Filtery.Extensions
 {
     public static class IEnumerableExtensions
     {
-        public static IEnumerable<T> BuildFiltery<T>(this IList<T> list, FilteryRequest filteryRequest)
+        public static IEnumerable<T> BuildFiltery<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            // var predicate = PredicateBuilder.True<Member>();
-            //
-            // if (memberSearchContract?.MemberType != null)
-            // {
-            //     predicate = predicate.And(p => p.MemberTypeId == memberSearchContract.MemberType);
-            // }
+            var mappings = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
+            var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings);
             
-            
-            //Scan assembly for class filter mapping file
-            
-            //And query
-            
-            //Or query
-            
-            //Merge Queries
-            
-            return new List<T>();
-        }
-        public static IEnumerable<T> BuildFiltery<T>(this IList<T> list, IFilteryMapping<T> mapping,FilteryRequest filteryRequest)
-        {
-            return new List<T>();
+            return query;
         }
     }
 }

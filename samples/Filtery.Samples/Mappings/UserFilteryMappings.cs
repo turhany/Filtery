@@ -3,9 +3,9 @@ using Filtery.Samples.Model;
 
 namespace Filtery.Samples.Mappings
 {
-    public class UserFilteryMappings : IFilteryMapping<User>
+    public class UserFilteryMappings : AbstractFilteryMapping<User>
     {
-        public void FilteryMappings(FilteryMapper<User> mapper)
+        public UserFilteryMappings()
         {
             mapper.Name("name").Property(p => p.FirstName);
             mapper.Name("last").Property(p => p.LastName);
