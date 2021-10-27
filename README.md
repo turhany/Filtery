@@ -36,6 +36,13 @@ public class User
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public int Age { get; set; }
+    public Address Address { get; set; }
+}
+
+public class Address
+{
+    public string Country { get; set; }
+    public string City { get; set; }
 }
 ```
 
@@ -48,6 +55,7 @@ public class UserFilteryMappings : IFilteryMapping<User>
     {
         mapper.Name("name").Property(p => p.FirstName);
         mapper.Name("last").Property(p => p.LastName);
+        mapper.Name("country").Property(p => p.Address.Country);
     }
 }
 ```
@@ -61,8 +69,28 @@ MVC Flow Usage Sample:
 public JsonResult GetUsers(FilteryRequest request) 
 {
     var userList = new List<User>();
-    userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
-    userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
+    userList.Add(new User
+    {
+        FirstName = "Türhan", 
+        LastName = "Yıldırım", 
+        Age = 22, 
+        Address = new Address
+        {
+            Country = "Bulgaristan", 
+            City = "Şumen"
+        }
+    });
+    userList.Add(new User
+    {
+        FirstName = "Çağla", 
+        LastName = "Yıldırım", 
+        Age = 18, 
+        Address = new Address
+        {
+            Country = "Türkiye", 
+            City = "İstanbul"
+        }
+    });;
 
     var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
 
@@ -75,19 +103,43 @@ Usage Sample:
 
 ```cs
 var userList = new List<User>();
-userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
-userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
+userList.Add(new User
+{
+    FirstName = "Türhan", 
+    LastName = "Yıldırım", 
+    Age = 22, 
+    Address = new Address
+    {
+        Country = "Bulgaristan", 
+        City = "Şumen"
+    }
+});
+userList.Add(new User
+{
+    FirstName = "Çağla", 
+    LastName = "Yıldırım", 
+    Age = 18, 
+    Address = new Address
+    {
+        Country = "Türkiye", 
+        City = "İstanbul"
+    }
+});;
 
 var filteryQuery = new FilteryRequest
 {
     AndFilters = new List<FilterItem>
     {
+        new FilterItem {TargetFieldName = "country", Value = "kiye", Operation = FilterOperation.Contains}
+    },
+    OrFilters = new List<FilterItem>
+    {
         new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains },
-        new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains, , CaseSensitive = true}
+        new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains, CaseSensitive = true}
     },
     OrderOperations = new Dictionary<string, OrderOperation>()
     {
-        {"name", OrderOperation.Asc}
+        {"name", OrderOperation.Ascending}
     },
     PageNumber = 1,
     PageSize = 2
