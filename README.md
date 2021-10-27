@@ -7,42 +7,28 @@ Simple Filtering, Sorting and Paging  library.
 [![NuGet version](https://badge.fury.io/nu/Filtery.svg)](https://badge.fury.io/nu/Filtery)  ![Nuget](https://img.shields.io/nuget/dt/Filtery)
 
 #### Features:
-- Service Collection registeration support
 - Custom filter "Key" and "Property" mapping for search and order
-- Can manage string query CaseSensitive operation (Can set globaly or per FilterItem)
-- Also support paging
+- Can manage string query CaseSensitive operation (Default is false)
+- Also support paging (Default Page Number = 1, Default Page Size = 20)
 
 #### Supported Filter Operations:
 - Equal
 - NotEqual
 - Contains
 - GreaterThan
-- LowerThan
+- LessThan
 - GreaterThanAndEqual
-- LowerThanAndEqual
-- Include
-- Between
+- LessThanAndEqual
+- StartsWith
+- EndsWith
 
 #### Supported Order Operations:
-- Asc (Ascending)
-- Desc (Descending)
+- Ascending
+- Descending
 
 #### Usages:
-DI Registration:
 
-```cs
-public void ConfigureServices(IServiceCollection services)
-{
-    service.AddFilteryConfiguration(new FilteryConfiguration
-    {
-        DefaultPageSize = 10,
-        CaseSensitive = true,
-        RegisterMappingsFromAssembly = typeof(UserFilteryMappings).Assembly
-    });
-}
-```
-
-Sample Model:
+Model:
 
 ```cs
 public class User
@@ -66,7 +52,26 @@ public class UserFilteryMappings : IFilteryMapping<User>
 }
 ```
 
-Usage:
+MVC Flow Usage Sample:
+
+```cs
+
+
+[HttpGet]
+public JsonResult GetUsers(FilteryRequest request) 
+{
+    var userList = new List<User>();
+    userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
+    userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
+
+    var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
+
+    return Json(response);
+}
+
+```
+
+Usage Sample:
 
 ```cs
 var userList = new List<User>();
@@ -77,8 +82,8 @@ var filteryQuery = new FilteryRequest
 {
     AndFilters = new List<FilterItem>
     {
-        new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains, CaseSensitive = false},
-        new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains}
+        new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains },
+        new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains, , CaseSensitive = true}
     },
     OrderOperations = new Dictionary<string, OrderOperation>()
     {
@@ -88,12 +93,11 @@ var filteryQuery = new FilteryRequest
     PageSize = 2
 };
 
-var response = userList.BuildFiltery(filteryQuery);
+var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
 
-//Or you can give mapping file while filter operation
-
-var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 ```
+
+
 
 ### Release Notes
 

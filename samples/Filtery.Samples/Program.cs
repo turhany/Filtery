@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.Linq;
 using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Filter;
@@ -19,22 +20,22 @@ namespace Filtery.Samples
 
             var filteryQuery = new FilteryRequest
             {
-                AndFilters = new List<FilterItem>
+                OrFilters = new List<FilterItem>
                 {
-                    new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains, CaseSensitive = false},
-                    new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains}
+                    new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains },
+                    new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains, CaseSensitive = true}
                 },
                 OrderOperations = new Dictionary<string, OrderOperation>()
                 {
-                    {"name", OrderOperation.Asc}
+                    {"name", OrderOperation.Ascending}
                 },
                 PageNumber = 1,
                 PageSize = 2
             };
             
-            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
-            
-            Console.WriteLine("Hello World!");
+            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
+
+            Console.ReadKey();
         }
     }
 }

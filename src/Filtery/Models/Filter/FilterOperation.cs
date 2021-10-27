@@ -6,12 +6,10 @@
         NotEqual = 1,
         Contains = 2,
         GreaterThan = 3,
-        LowerThan = 4,
+        LessThan = 4,
         GreaterThanOrEqual = 5,
-        LowerThanOrEqual = 6,
-        Include = 7,
-        Between = 8,
-        StartsWith = 9,
-        EndsWith = 10
+        LessThanOrEqual = 6,
+        StartsWith = 7,
+        EndsWith = 8
     }
 }

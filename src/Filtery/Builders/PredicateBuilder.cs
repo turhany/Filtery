@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 
 namespace Filtery.Builders
 {
-    internal static class PredicateBuilder
+    //https://www.c-sharpcorner.com/UploadFile/c42694/dynamic-query-in-linq-using-predicate-builder/
+       internal static class PredicateBuilder
     {
         /// <summary>    
         /// Creates a predicate that evaluates to true.    

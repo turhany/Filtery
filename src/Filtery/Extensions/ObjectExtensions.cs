@@ -19,8 +19,8 @@ namespace Filtery.Extensions
 
             return value;
         }
-        
-        public static FieldInfo GetFiledInfo(this object item, string fieldName)
+
+        private static FieldInfo GetFiledInfo(this object item, string fieldName)
         {
             if (item == null)
             {
