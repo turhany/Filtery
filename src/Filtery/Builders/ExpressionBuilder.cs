@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+
 // ReSharper disable AssignNullToNotNullAttribute
 
 namespace Filtery.Builders
@@ -58,7 +60,7 @@ namespace Filtery.Builders
 
                 //skip current property and get navigation property expression recursivly
                 var innerProperties = properties.Skip(1).ToArray();
-                predicate = BuildNavigationExpression(childParameter, comparer, value, caseSensitive ,innerProperties);
+                predicate = BuildNavigationExpression(childParameter, comparer, value, caseSensitive, innerProperties);
                 if (isCollection)
                 {
                     //build subquery
@@ -90,12 +92,35 @@ namespace Filtery.Builders
         private static Expression BuildCondition(Expression parameter, string property, OperatorComparer comparer,
             object value, bool caseSensitive)
         {
-            var childProperty = parameter.Type.GetProperty(property);
-            var left = Expression.Property(parameter, childProperty);
+            var left = PrepareMemberExpression(parameter, property);
             var right = Expression.Constant(value);
             var predicate = BuildComparsion(left, comparer, right, caseSensitive);
             return MakeLambda(parameter, predicate);
         }
+
+        public static MemberExpression PrepareMemberExpression(Expression value, string path)
+        {
+            var propertyNames = path.Split('.');
+
+            if (propertyNames.Length == 1)
+            {
+                return Expression.Property(value, value.Type.GetProperty(path));
+            }
+
+            var tempPropertyInfo = value.Type.GetProperty(propertyNames[0]);
+
+            var tempMemberExpression = Expression.Property(value, tempPropertyInfo);
+
+            for (int i = 1; i < propertyNames.Length; i++)
+            {
+                var nextPropertyInfo = tempPropertyInfo.PropertyType.GetProperty(propertyNames[i]);
+                tempMemberExpression = Expression.Property(tempMemberExpression, nextPropertyInfo);
+                tempPropertyInfo = nextPropertyInfo;
+            }
+
+            return tempMemberExpression;
+        }
+
 
         private static Expression BuildComparsion(Expression left, OperatorComparer comparer, Expression right,
             bool caseSensitive)

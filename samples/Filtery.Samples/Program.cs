@@ -15,11 +15,15 @@ namespace Filtery.Samples
         static void Main(string[] args)
         {
             var userList = new List<User>();
-            userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22});
-            userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18});
+            userList.Add(new User{FirstName = "Türhan", LastName = "Yıldırım", Age = 22, Address = new Address{Country = "Bulgaristan", City = "Şumen"}});
+            userList.Add(new User{FirstName = "Çağla", LastName = "Yıldırım", Age = 18, Address = new Address{Country = "Türkiye", City = "İstanbul"}});
 
             var filteryQuery = new FilteryRequest
             {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "country", Value = "kiye", Operation = FilterOperation.Contains}
+                },
                 OrFilters = new List<FilterItem>
                 {
                     new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains },

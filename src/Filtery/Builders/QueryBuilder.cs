@@ -62,7 +62,10 @@ namespace Filtery.Builders
         
         private string GetPropertyName<T>(FilterItem filterItem, Dictionary<string, Expression<Func<T, object>>> mappings)
         {
-            return ((MemberExpression) mappings[filterItem.TargetFieldName.ToLower()].Body).Member.Name;
+            var baseParameter = mappings[filterItem.TargetFieldName.ToLower()].Parameters.First().Name;
+            var fullParameterName = mappings[filterItem.TargetFieldName.ToLower()].Body.ToString();
+            var propertyName = fullParameterName.Replace($"{baseParameter}.", string.Empty);
+            return propertyName;
         }
         private Expression<Func<T, object>> GetPropertyMapping<T>(string filterName, Dictionary<string, Expression<Func<T, object>>> mappings)
         {

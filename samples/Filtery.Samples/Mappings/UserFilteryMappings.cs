@@ -9,6 +9,7 @@ namespace Filtery.Samples.Mappings
         {
             mapper.Name("name").Property(p => p.FirstName);
             mapper.Name("last").Property(p => p.LastName);
+            mapper.Name("country").Property(p => p.Address.Country);
         }
     }
 }
