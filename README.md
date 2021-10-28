@@ -22,6 +22,48 @@ Simple Filtering, Sorting and Paging  library.
 - StartsWith
 - EndsWith
 
+#### Type and Supported Filter Operations:
+* String
+    * Equal
+    * NotEqual
+    * Contains
+    * GreaterThan > Not supported (throw Exception)
+    * LessThan > Not supported (Exception)
+    * GreaterThanAndEqual  > Not supported (throw Exception)
+    * LessThanAndEqual > Not supported (throw Exception)
+    * StartsWith
+    * EndsWith 
+* Integer
+    * Equal
+    * NotEqual
+    * Contains > Not supported (Convert to Equal)
+    * GreaterThan 
+    * LessThan
+    * GreaterThanAndEqual
+    * LessThanAndEqual > Not supported (throw Exception)
+    * StartsWith > Not supported (Convert to Equal)
+    * EndsWith  > Not supported (Convert to Equal)
+* DateTime
+    * Equal
+    * NotEqual
+    * Contains
+    * GreaterThan > Not supported (throw Exception)
+    * LessThan > Not supported (throw Exception)
+    * GreaterThanAndEqual  > Not supported (throw Exception)
+    * LessThanAndEqual > Not supported (throw Exception)
+    * StartsWith
+    * EndsWith 
+* Boolean
+    * Equal
+    * NotEqual
+    * Contains > Not supported (Convert to Equal)
+    * GreaterThan > Not supported (throw Exception)
+    * LessThan > Not supported (throw Exception)
+    * GreaterThanAndEqual > Not supported (throw Exception)
+    * LessThanAndEqual > Not supported (throw Exception)
+    * StartsWith > Not supported (Convert to Equal)
+    * EndsWith  > Not supported (Convert to Equal)
+
 #### Supported Order Operations:
 - Ascending
 - Descending

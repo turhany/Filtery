@@ -21,7 +21,7 @@ namespace Filtery.Builders
                 var propertyName = GetPropertyName(filterItem, mappings);
                 var operatorComparer = GetOperatorComparer(filterItem.Operation);
 
-                var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive,propertyName);
+                var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
                 mainAndPredicate = mainAndPredicate.And(predicate);
             }
 
@@ -30,7 +30,7 @@ namespace Filtery.Builders
                 var propertyName = GetPropertyName(filterItem, mappings);
                 var operatorComparer = GetOperatorComparer(filterItem.Operation);
 
-                var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive ,propertyName);
+                var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
                 mainOrPredicate = mainAndPredicate.Or(predicate);
             }
 
@@ -45,7 +45,7 @@ namespace Filtery.Builders
             foreach (var orderOperation in filteryRequest.OrderOperations)
             {
                 var propertyMapping = GetPropertyMapping(orderOperation.Key, mappings);
-                
+
                 if (orderOperation.Value == OrderOperation.Ascending)
                 {
                     list = list.OrderBy(propertyMapping.Compile());
@@ -59,18 +59,45 @@ namespace Filtery.Builders
             list = list.GetPage(filteryRequest.PageNumber, filteryRequest.PageSize);
             return list;
         }
-        
+
         private string GetPropertyName<T>(FilterItem filterItem, Dictionary<string, Expression<Func<T, object>>> mappings)
         {
-            var baseParameter = mappings[filterItem.TargetFieldName.ToLower()].Parameters.First().Name;
-            var fullParameterName = mappings[filterItem.TargetFieldName.ToLower()].Body.ToString();
-            var propertyName = fullParameterName.Replace($"{baseParameter}.", string.Empty);
-            return propertyName;
+            var expression = mappings[filterItem.TargetFieldName.ToLower()];
+
+            MemberExpression me;
+            switch (expression.Body.NodeType)
+            {
+                case ExpressionType.Convert:
+                case ExpressionType.ConvertChecked:
+                    var ue = expression.Body as UnaryExpression;
+                    me = ue?.Operand as MemberExpression;
+                    break;
+                default:
+                    me = expression.Body as MemberExpression;
+                    break;
+            }
+
+            var propertyList = new List<string>();
+            while (me != null)
+            {
+                string propertyName = me.Member.Name;
+                Type propertyType = me.Type;
+                me = me.Expression as MemberExpression;
+                
+                Console.WriteLine(propertyName + ": " + propertyType);
+                propertyList.Add(propertyName);
+            }
+
+            var response = string.Join('.', propertyList);
+            
+            return response;
         }
+
         private Expression<Func<T, object>> GetPropertyMapping<T>(string filterName, Dictionary<string, Expression<Func<T, object>>> mappings)
         {
             return mappings[filterName.ToLower()];
         }
+
         private OperatorComparer GetOperatorComparer(FilterOperation filterOperation)
         {
             OperatorComparer response;
@@ -109,6 +136,5 @@ namespace Filtery.Builders
 
             return response;
         }
-        
     }
 }
