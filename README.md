@@ -28,7 +28,7 @@ Simple Filtering, Sorting and Paging  library.
     * NotEqual
     * Contains
     * GreaterThan > Not supported (throw Exception)
-    * LessThan > Not supported (Exception)
+    * LessThan > Not supported (throw Exception)
     * GreaterThanAndEqual  > Not supported (throw Exception)
     * LessThanAndEqual > Not supported (throw Exception)
     * StartsWith
