@@ -20,6 +20,12 @@ namespace Filtery.Samples
 
             var filteryQuery = new FilteryRequest
             {
+                
+                 AndFilters = new List<FilterItem>
+                 {
+                     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.GreaterThan}, //Not work
+                 },
+                
                 //String
                 // AndFilters = new List<FilterItem>
                 // {

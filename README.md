@@ -27,10 +27,10 @@ Simple Filtering, Sorting and Paging  library.
     * Equal
     * NotEqual
     * Contains
-    * GreaterThan > Not supported (throw Exception)
-    * LessThan > Not supported (throw Exception)
-    * GreaterThanAndEqual  > Not supported (throw Exception)
-    * LessThanAndEqual > Not supported (throw Exception)
+    * GreaterThan > throw Not Support Exception
+    * LessThan > throw Not Support Exception
+    * GreaterThanAndEqual  > throw Not Support Exception
+    * LessThanAndEqual > throw Not Support Exception
     * StartsWith
     * EndsWith 
 * Integer
@@ -40,27 +40,27 @@ Simple Filtering, Sorting and Paging  library.
     * GreaterThan 
     * LessThan
     * GreaterThanAndEqual
-    * LessThanAndEqual > Not supported (throw Exception)
+    * LessThanAndEqual
     * StartsWith > Not supported (Convert to Equal)
     * EndsWith  > Not supported (Convert to Equal)
 * DateTime
     * Equal
     * NotEqual
-    * Contains
-    * GreaterThan > Not supported (throw Exception)
-    * LessThan > Not supported (throw Exception)
-    * GreaterThanAndEqual  > Not supported (throw Exception)
-    * LessThanAndEqual > Not supported (throw Exception)
-    * StartsWith
-    * EndsWith 
+    * Contains > Not supported (Convert to Equal)
+    * GreaterThan 
+    * LessThan 
+    * GreaterThanAndEqual  
+    * LessThanAndEqual 
+    * StartsWith > Not supported (Convert to Equal)
+    * EndsWith > Not supported (Convert to Equal)
 * Boolean
     * Equal
     * NotEqual
     * Contains > Not supported (Convert to Equal)
-    * GreaterThan > Not supported (throw Exception)
-    * LessThan > Not supported (throw Exception)
-    * GreaterThanAndEqual > Not supported (throw Exception)
-    * LessThanAndEqual > Not supported (throw Exception)
+    * GreaterThan > throw Not Support Exception
+    * LessThan > throw Not Support Exception
+    * GreaterThanAndEqual > throw Not Support Exception
+    * LessThanAndEqual > throw Not Support Exception
     * StartsWith > Not supported (Convert to Equal)
     * EndsWith  > Not supported (Convert to Equal)
 

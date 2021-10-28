@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Filtery.Exceptions;
+using Filtery.Models.Filter;
 
 // ReSharper disable AssignNullToNotNullAttribute
 
@@ -25,9 +27,7 @@ namespace Filtery.Builders
     //https://stackoverflow.com/a/23754707
     internal class ExpressionBuilder
     {
-        public static Expression<Func<T, bool>> BuildPredicate<T>(object value, OperatorComparer comparer,
-            bool caseSensitive,
-            params string[] properties)
+        public static Expression<Func<T, bool>> BuildPredicate<T>(object value, OperatorComparer comparer, bool caseSensitive, params string[] properties)
         {
             var parameterExpression = Expression.Parameter(typeof(T), typeof(T).Name);
             return (Expression<Func<T, bool>>) BuildNavigationExpression(parameterExpression, comparer, value,
@@ -35,8 +35,7 @@ namespace Filtery.Builders
                 properties);
         }
 
-        private static Expression BuildNavigationExpression(Expression parameter, OperatorComparer comparer,
-            object value, bool caseSensitive, params string[] properties)
+        private static Expression BuildNavigationExpression(Expression parameter, OperatorComparer comparer, object value, bool caseSensitive, params string[] properties)
         {
             Expression resultExpression;
             Expression childParameter, predicate;
@@ -89,10 +88,12 @@ namespace Filtery.Builders
             return MakeLambda(parameter, predicate);
         }
 
-        private static Expression BuildCondition(Expression parameter, string property, OperatorComparer comparer,
-            object value, bool caseSensitive)
+        private static Expression BuildCondition(Expression parameter, string property, OperatorComparer comparer, object value, bool caseSensitive)
         {
             var left = PrepareMemberExpression(parameter, property);
+            
+            ValidateTypeAndOperatorSupportMatches(left, comparer);
+            
             var right = Expression.Constant(value);
             var predicate = BuildComparsion(left, comparer, right, caseSensitive);
             return MakeLambda(parameter, predicate);
@@ -121,9 +122,7 @@ namespace Filtery.Builders
             return tempMemberExpression;
         }
 
-
-        private static Expression BuildComparsion(Expression left, OperatorComparer comparer, Expression right,
-            bool caseSensitive)
+        private static Expression BuildComparsion(Expression left, OperatorComparer comparer, Expression right, bool caseSensitive)
         {
             var mask = new List<OperatorComparer>
             {
@@ -144,8 +143,7 @@ namespace Filtery.Builders
             return BuildStringCondition(left, comparer, right, caseSensitive);
         }
 
-        private static Expression BuildStringCondition(Expression left, OperatorComparer comparer, Expression right,
-            bool caseSensitive)
+        private static Expression BuildStringCondition(Expression left, OperatorComparer comparer, Expression right, bool caseSensitive)
         {
             var compareMethod = typeof(string).GetMethods().First(m =>
                 m.Name.Equals(Enum.GetName(typeof(OperatorComparer), comparer)) && m.GetParameters().Count() == 1);
@@ -177,6 +175,26 @@ namespace Filtery.Builders
             {
                 Parameter = node;
                 return node;
+            }
+        }
+
+        private static void ValidateTypeAndOperatorSupportMatches(MemberExpression memberExpression, OperatorComparer operatorComparer)
+        {
+            if (memberExpression.Type == typeof(string) || memberExpression.Type == typeof(bool))
+            {
+                var unSuppoertedFilterTypes = new List<OperatorComparer>
+                {
+                    OperatorComparer.GreaterThan,
+                    OperatorComparer.LessThan,
+                    OperatorComparer.GreaterThanOrEqual,
+                    OperatorComparer.LessThanOrEqual
+                };
+
+                if (unSuppoertedFilterTypes.Contains(operatorComparer))
+                {
+                    var message = $"'{operatorComparer.ToString()}' operation not supported for '{memberExpression.Type.Name}' type";
+                    throw new NotSupportedFilterOperationForType(message);
+                }
             }
         }
     }
