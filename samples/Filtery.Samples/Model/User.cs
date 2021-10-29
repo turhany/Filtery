@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Filtery.Samples.Model
 {
@@ -10,5 +11,6 @@ namespace Filtery.Samples.Model
         public bool HasDriverLicence { get; set; }
         public DateTime Birthdate { get; set; }
         public Address Address { get; set; }
+        public List<string> ParentNames { get; set; }
     }
 }

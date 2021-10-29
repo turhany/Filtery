@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using Filtery.Constants;
 using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Filter;
@@ -11,27 +13,71 @@ namespace Filtery.Builders
 {
     internal class QueryBuilder
     {
-        internal IEnumerable<T> Build<T>(IEnumerable<T> list, FilteryRequest filteryRequest, Dictionary<string, Expression<Func<T, object>>> mappings)
+        internal IEnumerable<T> Build<T>(IEnumerable<T> list, FilteryRequest filteryRequest, 
+            Dictionary<string, Expression<Func<T, object>>> mappings,
+            Dictionary<string, Expression<Func<T, bool>>> customMappings)
         {
             var mainAndPredicate = PredicateBuilder.True<T>();
             var mainOrPredicate = PredicateBuilder.True<T>();
 
             foreach (var filterItem in filteryRequest.AndFilters)
             {
-                var propertyName = GetPropertyName(filterItem, mappings);
-                var operatorComparer = GetOperatorComparer(filterItem.Operation);
+                if (customMappings.ContainsKey(filterItem.TargetFieldName.ToLower()))
+                {
+                    var customMapping = customMappings[filterItem.TargetFieldName.ToLower()];
+                    
+                    var whereQuery = customMapping.ToString();
+                    foreach (var marker in  FilteryQueryMarker.ParameterCompareList)
+                    {
+                        if (whereQuery.Contains(marker))
+                        {
+                            whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
+                            break;
+                        }
+                    }
+                    
+                    var modifiedWhere = DynamicExpressionParser.ParseLambda<T, bool>(new ParsingConfig(), true, whereQuery,filterItem.Value);
+                    
+                    mainAndPredicate = mainAndPredicate.And(modifiedWhere);
+                }
+                else
+                {
+                    var propertyName = GetPropertyName(filterItem, mappings);
+                    var operatorComparer = GetOperatorComparer(filterItem.Operation);
 
-                var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
-                mainAndPredicate = mainAndPredicate.And(predicate);
+                    var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
+                    mainAndPredicate = mainAndPredicate.And(predicate);    
+                }
             }
 
             foreach (var filterItem in filteryRequest.OrFilters)
             {
-                var propertyName = GetPropertyName(filterItem, mappings);
-                var operatorComparer = GetOperatorComparer(filterItem.Operation);
+                if (customMappings.ContainsKey(filterItem.TargetFieldName.ToLower()))
+                {
+                    var customMapping = customMappings[filterItem.TargetFieldName.ToLower()];
+                    
+                    var whereQuery = customMapping.ToString();
+                    foreach (var marker in  FilteryQueryMarker.ParameterCompareList)
+                    {
+                        if (whereQuery.Contains(marker))
+                        {
+                            whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
+                            break;
+                        }
+                    }
+                    
+                    var modifiedWhere = DynamicExpressionParser.ParseLambda<T, bool>(new ParsingConfig(), true, whereQuery,filterItem.Value);
+                    
+                    mainOrPredicate = mainOrPredicate.And(modifiedWhere);
+                }
+                else
+                {
+                    var propertyName = GetPropertyName(filterItem, mappings);
+                    var operatorComparer = GetOperatorComparer(filterItem.Operation);
 
-                var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
-                mainOrPredicate = mainAndPredicate.Or(predicate);
+                    var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
+                    mainOrPredicate = mainOrPredicate.And(predicate);    
+                }
             }
 
             var mainPredicate = PredicateBuilder.True<T>();
@@ -63,7 +109,7 @@ namespace Filtery.Builders
         private string GetPropertyName<T>(FilterItem filterItem, Dictionary<string, Expression<Func<T, object>>> mappings)
         {
             var expression = mappings[filterItem.TargetFieldName.ToLower()];
-
+            
             MemberExpression me;
             switch (expression.Body.NodeType)
             {
@@ -89,7 +135,7 @@ namespace Filtery.Builders
             }
 
             var response = string.Join('.', propertyList);
-            
+
             return response;
         }
 
