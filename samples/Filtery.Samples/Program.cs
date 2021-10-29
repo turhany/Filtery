@@ -17,34 +17,35 @@ namespace Filtery.Samples
             var userList = new List<User>();
             userList.Add(new User
             {
-                FirstName = "Türhan", 
-                LastName = "Yıldırım", 
+                FirstName = "John", 
+                LastName = "Doe", 
                 Age = 22, 
                 HasDriverLicence = true, 
                 Birthdate = new DateTime(1987, 06, 06), 
-                Address = new Address{Country = "Bulgaristan", City = "Şumen"},
-                ParentNames = new List<string>{ "Recep", "Fatma" }
+                Address = new Address{Country = "Netherland", City = "Amsterdam"},
+                ParentNames = new List<string>{ "Bob", "Sera" }
             });
             userList.Add(new User
             {
-                FirstName = "Çağla", 
-                LastName = "Yıldırım", 
+                FirstName = "Alisa", 
+                LastName = "Doe", 
                 Age = 18, 
                 HasDriverLicence = true, 
-                Birthdate = new DateTime(1997, 09, 27), Address = new Address{Country = "Türkiye", City = "İstanbul"},
-                ParentNames = new List<string>{ "Turgut" }
+                Birthdate = new DateTime(1997, 09, 27), 
+                Address = new Address{Country = "Mexico", City = "Merida"},
+                ParentNames = new List<string>{ "Fernando", "Elena" }
             });
 
             var filteryQuery = new FilteryRequest
             {
-                //String
+                //string
                 // AndFilters = new List<FilterItem>
                 // {
-                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.Equal},
-                //     new FilterItem {TargetFieldName = "name", Value = "çağla", Operation = FilterOperation.NotEqual},
-                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.Contains},
-                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.StartsWith},
-                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.EndsWith}
+                //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
+                //     new FilterItem {TargetFieldName = "name", Value = "alisa", Operation = FilterOperation.NotEqual},
+                //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Contains},
+                //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.StartsWith},
+                //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.EndsWith}
                 // },
                 
                 //integer
@@ -76,10 +77,10 @@ namespace Filtery.Samples
                 //     new FilterItem {TargetFieldName = "licence", Value = false, Operation = FilterOperation.NotEqual}
                 // },
                 
-                //Navigation String List
+                //Navigation Property String List
                 OrFilters = new List<FilterItem>
                 {
-                    new FilterItem {TargetFieldName = "parentnames", Value = "Fatma", Operation = FilterOperation.Contains}
+                    new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains}
                 },
                 
                 OrderOperations = new Dictionary<string, OrderOperation>

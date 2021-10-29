@@ -29,7 +29,7 @@ Simple Filtering, Sorting and Paging  library.
 
 #### Usages:
 
-Model:
+##### Model:
 
 ```cs
 public class User
@@ -37,7 +37,10 @@ public class User
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public int Age { get; set; }
+    public bool HasDriverLicence { get; set; }
+    public DateTime Birthdate { get; set; }
     public Address Address { get; set; }
+    public List<string> ParentNames { get; set; }
 }
 
 public class Address
@@ -47,7 +50,32 @@ public class Address
 }
 ```
 
-Filter Mapping File:
+##### Filter Mapping File:
+
+You should mark the place where the filtering value should come from in the filtering query with the correct data type in the "FilteryQueryValueMarker". The filtering value you sent will be automatically replace there.
+
+###### FilteryQueryValueMarker Types
+* FilterStringValue          
+* FilterCharValue            
+* FilterCharNullableValue    
+* FilterShortValue           
+* FilterNullableShortValue
+* FilterByteValue            
+* FilterNullableByteValue    
+* FilterIntValue             
+* FilterNullableIntValue
+* FilterLongValue      
+* FilterNullableLongValue
+* FilterFloatValue     
+* FilterNullableFloatValue
+* FilterDecimalValue   
+* FilterNullableDecimalValue
+* FilterDoubleValue    
+* FilterNullableDoubleValue
+* FilterDateTimeValue  
+* FilterNullableDateTimeValue
+* FilterBooleanValue         
+* FilterNullableBooleanValue
 
 ```cs
 public class UserFilteryMappings : IFilteryMapping<User>
@@ -57,14 +85,47 @@ public class UserFilteryMappings : IFilteryMapping<User>
         mapper
             .Name("name")
             .OrderProperty(p =>p.FirstName)
-            .Filter(p => p.FirstName.ToLower().Contains(FilteryQueryMarker.filterStringMarker.ToLower()), FilterOperation.Contains)
-            .Filter(p => p.FirstName.Equals(FilteryQueryMarker.filterStringMarker.ToLower()), FilterOperation.Equal);
+            .Filter(p => p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Equal)
+            .Filter(p => !p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.NotEqual)
+            .Filter(p => p.FirstName.ToLower().Contains(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Contains)
+            .Filter(p => p.FirstName.ToLower().StartsWith(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.StartsWith)
+            .Filter(p => p.FirstName.ToLower().EndsWith(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.EndsWith);
+
+        mapper
+            .Name("age")
+            .OrderProperty(p => p.Age)
+            .Filter(p => p.Age == FilteryQueryValueMarker.FilterIntValue, FilterOperation.Equal)
+            .Filter(p => p.Age != FilteryQueryValueMarker.FilterIntValue, FilterOperation.NotEqual)
+            .Filter(p => p.Age > FilteryQueryValueMarker.FilterIntValue, FilterOperation.GreaterThan)
+            .Filter(p => p.Age < FilteryQueryValueMarker.FilterIntValue, FilterOperation.LessThan)
+            .Filter(p => p.Age >= FilteryQueryValueMarker.FilterIntValue, FilterOperation.GreaterThanOrEqual)
+            .Filter(p => p.Age <= FilteryQueryValueMarker.FilterIntValue, FilterOperation.LessThanOrEqual);
+        
+        mapper
+            .Name("date")
+            .OrderProperty(p => p.Age)
+            .Filter(p => p.Birthdate == FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.Equal)
+            .Filter(p => p.Birthdate != FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.NotEqual)
+            .Filter(p => p.Birthdate > FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.GreaterThan)
+            .Filter(p => p.Birthdate < FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.LessThan)
+            .Filter(p => p.Birthdate >= FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.GreaterThanOrEqual)
+            .Filter(p => p.Birthdate <= FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.LessThanOrEqual);
+
+        mapper
+            .Name("licence")
+            .OrderProperty(p => p.HasDriverLicence)
+            .Filter(p => p.HasDriverLicence == FilteryQueryValueMarker.FilterBooleanValue, FilterOperation.Equal)
+            .Filter(p => p.HasDriverLicence != FilteryQueryValueMarker.FilterBooleanValue, FilterOperation.NotEqual);
+        
+        mapper
+            .NameWithoutOrder("parentnames")
+            .Filter(p => p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains);
 
     }
 }
 ```
 
-MVC Flow Usage Sample:
+##### MVC Flow Usage Sample:
 
 ```cs
 
@@ -75,26 +136,24 @@ public JsonResult GetUsers(FilteryRequest request)
     var userList = new List<User>();
     userList.Add(new User
     {
-        FirstName = "Türhan", 
-        LastName = "Yıldırım", 
+        FirstName = "John", 
+        LastName = "Doe", 
         Age = 22, 
-        Address = new Address
-        {
-            Country = "Bulgaristan", 
-            City = "Şumen"
-        }
+        HasDriverLicence = true, 
+        Birthdate = new DateTime(1987, 06, 06), 
+        Address = new Address{Country = "Netherland", City = "Amsterdam"},
+        ParentNames = new List<string>{ "Bob", "Sera" }
     });
     userList.Add(new User
     {
-        FirstName = "Çağla", 
-        LastName = "Yıldırım", 
+        FirstName = "Alisa", 
+        LastName = "Doe", 
         Age = 18, 
-        Address = new Address
-        {
-            Country = "Türkiye", 
-            City = "İstanbul"
-        }
-    });;
+        HasDriverLicence = true, 
+        Birthdate = new DateTime(1997, 09, 27), 
+        Address = new Address{Country = "Mexico", City = "Merida"},
+        ParentNames = new List<string>{ "Fernando", "Elena" }
+    });
 
     var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
 
@@ -103,45 +162,79 @@ public JsonResult GetUsers(FilteryRequest request)
 
 ```
 
-Usage Sample:
+##### Usage Sample:
 
 ```cs
 var userList = new List<User>();
 userList.Add(new User
 {
-    FirstName = "Türhan", 
-    LastName = "Yıldırım", 
+    FirstName = "John", 
+    LastName = "Doe", 
     Age = 22, 
-    Address = new Address
-    {
-        Country = "Bulgaristan", 
-        City = "Şumen"
-    }
+    HasDriverLicence = true, 
+    Birthdate = new DateTime(1987, 06, 06), 
+    Address = new Address{Country = "Netherland", City = "Amsterdam"},
+    ParentNames = new List<string>{ "Bob", "Sera" }
 });
 userList.Add(new User
 {
-    FirstName = "Çağla", 
-    LastName = "Yıldırım", 
+    FirstName = "Alisa", 
+    LastName = "Doe", 
     Age = 18, 
-    Address = new Address
-    {
-        Country = "Türkiye", 
-        City = "İstanbul"
-    }
-});;
+    HasDriverLicence = true, 
+    Birthdate = new DateTime(1997, 09, 27), 
+    Address = new Address{Country = "Mexico", City = "Merida"},
+    ParentNames = new List<string>{ "Fernando", "Elena" }
+});
 
 var filteryQuery = new FilteryRequest
 {
-    AndFilters = new List<FilterItem>
-    {
-        new FilterItem {TargetFieldName = "country", Value = "kiye", Operation = FilterOperation.Contains}
-    },
+    //string
+    // AndFilters = new List<FilterItem>
+    // {
+    //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
+    //     new FilterItem {TargetFieldName = "name", Value = "alisa", Operation = FilterOperation.NotEqual},
+    //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Contains},
+    //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.StartsWith},
+    //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.EndsWith}
+    // },
+    
+    //integer
+    // AndFilters = new List<FilterItem>
+    // {
+    //     new FilterItem {TargetFieldName = "age", Value = 18, Operation = FilterOperation.Equal},
+    //     new FilterItem {TargetFieldName = "age", Value = 22, Operation = FilterOperation.NotEqual},
+    //     new FilterItem {TargetFieldName = "age", Value = 6, Operation = FilterOperation.GreaterThan},
+    //     new FilterItem {TargetFieldName = "age", Value = 22, Operation = FilterOperation.LessThan},
+    //     new FilterItem {TargetFieldName = "age", Value = 6, Operation = FilterOperation.GreaterThanOrEqual},
+    //     new FilterItem {TargetFieldName = "age", Value = 22, Operation = FilterOperation.LessThanOrEqual}
+    // },
+    
+    //datetime
+    // AndFilters = new List<FilterItem>
+    // {
+    //     new FilterItem {TargetFieldName = "date", Value = new DateTime(1987, 06, 06), Operation = FilterOperation.Equal},
+    //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.NotEqual},
+    //     new FilterItem {TargetFieldName = "date", Value = new DateTime(1980, 06, 06), Operation = FilterOperation.GreaterThan},
+    //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.LessThan},
+    //     new FilterItem {TargetFieldName = "date", Value = new DateTime(1980, 06, 06), Operation = FilterOperation.GreaterThanOrEqual},
+    //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.LessThanOrEqual}
+    // },
+    
+    //bool
+    // AndFilters = new List<FilterItem>
+    // {
+    //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.Equal},
+    //     new FilterItem {TargetFieldName = "licence", Value = false, Operation = FilterOperation.NotEqual}
+    // },
+    
+    //Navigation Property String List
     OrFilters = new List<FilterItem>
     {
-        new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains },
-        new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains}
+        new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains}
     },
-    OrderOperations = new Dictionary<string, OrderOperation>()
+    
+    OrderOperations = new Dictionary<string, OrderOperation>
     {
         {"name", OrderOperation.Ascending}
     },
@@ -153,9 +246,7 @@ var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).To
 
 ```
 
-
-
 ### Release Notes
 
-#### 1.0.0
+##### 1.0.0
 * Base releases
