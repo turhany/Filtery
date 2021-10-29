@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Filtery.Exceptions;
+using Filtery.Models.Filter;
 
 namespace Filtery.Configuration.Filtery
 {
     public class FilteryMapper<TEntity>
     {
-        private readonly Dictionary<string, Expression<Func<TEntity, object>>> _map = new Dictionary<string, Expression<Func<TEntity, object>>>();
-        private readonly Dictionary<string, Expression<Func<TEntity, bool>>> _customMap = new Dictionary<string, Expression<Func<TEntity, bool>>>();
+        private readonly Dictionary<string, FilteryMappingItem<TEntity>> _map = new Dictionary<string, FilteryMappingItem<TEntity>>();
  
-        public PropertyMap Name(string name)
+        public FilterMap Name(string name)
         {
             if (!_map.ContainsKey(name))
             {
@@ -21,65 +22,95 @@ namespace Filtery.Configuration.Filtery
                 throw new MultipleFilterItemConfigurationException($"Multiple filter key detected for \"{name}\"");
             }
 
-            return new PropertyMap(name,this);
+            return new FilterMap(name,this);
         }
         
-        public PropertyCustomMap NameForCustomFilter(string name)
-        {
-            if (!_customMap.ContainsKey(name))
-            {
-                _customMap.Add(name, null);
-            }
-            else
-            {
-                throw new MultipleFilterItemConfigurationException($"Multiple filter key detected for \"{name}\"");
-            }
-
-            return new PropertyCustomMap(name,this);
-        }
-
-        public class PropertyMap
+        public class FilterMap
         {
             private readonly FilteryMapper<TEntity> _filteryMapper;
             private readonly string _name;
             
-            public PropertyMap(string name,FilteryMapper<TEntity> filteryMapper)
+            public FilterMap(string name,FilteryMapper<TEntity> filteryMapper)
             {
                 _name = name.ToLowerInvariant();
                 _filteryMapper = filteryMapper;
             }
 
-            public void Property(Expression<Func<TEntity, object>> expression)
+            public FilterOperationMap Filter(Expression<Func<TEntity, bool>> expression)
             {
                 if (!_filteryMapper._map.ContainsKey(_name))
                 {
                     throw new NotConfiguredFilterMappingException($"Filter configuration not found for Key: \"{_name}\"");
                 }
 
-                _filteryMapper._map[_name] = expression;
+                if (expression == null)
+                {
+                    throw new NotConfiguredFilterMappingException($"Filter Expression not found for Key: \"{_name}\"");
+                }
+
+                _filteryMapper._map[_name] = new FilteryMappingItem<TEntity>
+                {
+                    Expression = expression
+                };
+
+                return new FilterOperationMap(_name, _filteryMapper);
             } 
         }
         
-        public class PropertyCustomMap
+        public class FilterOperationMap
         {
             private readonly FilteryMapper<TEntity> _filteryMapper;
             private readonly string _name;
             
-            public PropertyCustomMap(string name,FilteryMapper<TEntity> filteryMapper)
+            public FilterOperationMap(string name,FilteryMapper<TEntity> filteryMapper)
             {
                 _name = name.ToLowerInvariant();
                 _filteryMapper = filteryMapper;
             }
-            
-            public void CustomFilter(Expression<Func<TEntity, bool>> expression)
+
+            public OrderMap FilterOperations(params FilterOperation[] filterOperations)
             {
-                if (!_filteryMapper._customMap.ContainsKey(_name))
+                if (!_filteryMapper._map.ContainsKey(_name))
                 {
                     throw new NotConfiguredFilterMappingException($"Filter configuration not found for Key: \"{_name}\"");
                 }
 
-                _filteryMapper._customMap[_name] = expression;
+                if (filterOperations == null || !filterOperations.Any())
+                {
+                    throw new NotConfiguredFilterMappingException($"Filter Operation not found for Key: \"{_name}\"");
+                }
+
+                _filteryMapper._map[_name].FilterOperations = filterOperations.ToList();
+
+                return new OrderMap(_name, _filteryMapper);
+            } 
+        }
+        
+        public class OrderMap
+        {
+            private readonly FilteryMapper<TEntity> _filteryMapper;
+            private readonly string _name;
+            
+            public OrderMap(string name,FilteryMapper<TEntity> filteryMapper)
+            {
+                _name = name.ToLowerInvariant();
+                _filteryMapper = filteryMapper;
             }
+
+            public void OrderProperty(Expression<Func<TEntity, object>> expression)
+            {
+                if (!_filteryMapper._map.ContainsKey(_name))
+                {
+                    throw new NotConfiguredFilterMappingException($"Filter configuration not found for Key: \"{_name}\"");
+                }
+
+                if (expression == null)
+                {
+                    throw new NotConfiguredFilterMappingException($"Order Expression not found for Key: \"{_name}\"");
+                }
+
+                _filteryMapper._map[_name].OrderExpression = expression;
+            } 
         }
     }
 }

@@ -40,8 +40,9 @@ namespace Filtery.Samples
                 
                  AndFilters = new List<FilterItem>
                  {
+                     new FilterItem {TargetFieldName = "name", Value = "Çağla", Operation = FilterOperation.Equal},
                      //new FilterItem {TargetFieldName = "parentsnamecontains", Value = "Fatma"}, //Not work
-                     new FilterItem {TargetFieldName = "parentsname", Value = "Fatma", Operation = FilterOperation.Contains}, //Not work
+                     //new FilterItem {TargetFieldName = "parentsname", Value = "Fatma", Operation = FilterOperation.Contains}, //Not work
                      //new FilterItem {TargetFieldName = "ages", Value = 20, Operation = FilterOperation.Contains}, //Not work
                  },
                 
