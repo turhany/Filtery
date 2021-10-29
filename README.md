@@ -7,9 +7,10 @@ Simple Filtering, Sorting and Paging  library.
 [![NuGet version](https://badge.fury.io/nu/Filtery.svg)](https://badge.fury.io/nu/Filtery)  ![Nuget](https://img.shields.io/nuget/dt/Filtery)
 
 #### Features:
-- Custom filter "Key" and "Property" mapping for search and order
-- Can manage string query CaseSensitive operation (Default is false)
-- Also support paging (Default Page Number = 1, Default Page Size = 20)
+- "Key" > "Filter Query" and "Operation "mapping for search
+- "Key" > "Order Property" matching
+- You are free to write Filter Operation mathed filter query 
+- Support paging (Default Page Number = 1, Default Page Size = 20)
 
 #### Supported Filter Operations:
 - Equal
@@ -21,48 +22,6 @@ Simple Filtering, Sorting and Paging  library.
 - LessThanAndEqual
 - StartsWith
 - EndsWith
-
-#### Type and Supported Filter Operations:
-* String
-    * Equal
-    * NotEqual
-    * Contains
-    * GreaterThan > throw Not Support Exception
-    * LessThan > throw Not Support Exception
-    * GreaterThanAndEqual  > throw Not Support Exception
-    * LessThanAndEqual > throw Not Support Exception
-    * StartsWith
-    * EndsWith 
-* Integer
-    * Equal
-    * NotEqual
-    * Contains > Not supported (Convert to Equal)
-    * GreaterThan 
-    * LessThan
-    * GreaterThanAndEqual
-    * LessThanAndEqual
-    * StartsWith > Not supported (Convert to Equal)
-    * EndsWith  > Not supported (Convert to Equal)
-* DateTime
-    * Equal
-    * NotEqual
-    * Contains > Not supported (Convert to Equal)
-    * GreaterThan 
-    * LessThan 
-    * GreaterThanAndEqual  
-    * LessThanAndEqual 
-    * StartsWith > Not supported (Convert to Equal)
-    * EndsWith > Not supported (Convert to Equal)
-* Boolean
-    * Equal
-    * NotEqual
-    * Contains > Not supported (Convert to Equal)
-    * GreaterThan > throw Not Support Exception
-    * LessThan > throw Not Support Exception
-    * GreaterThanAndEqual > throw Not Support Exception
-    * LessThanAndEqual > throw Not Support Exception
-    * StartsWith > Not supported (Convert to Equal)
-    * EndsWith  > Not supported (Convert to Equal)
 
 #### Supported Order Operations:
 - Ascending
@@ -95,9 +54,12 @@ public class UserFilteryMappings : IFilteryMapping<User>
 {
     public void FilteryMappings(FilteryMapper<User> mapper)
     {
-        mapper.Name("name").Property(p => p.FirstName);
-        mapper.Name("last").Property(p => p.LastName);
-        mapper.Name("country").Property(p => p.Address.Country);
+        mapper
+            .Name("name")
+            .OrderProperty(p =>p.FirstName)
+            .Filter(p => p.FirstName.ToLower().Contains(FilteryQueryMarker.filterStringMarker.ToLower()), FilterOperation.Contains)
+            .Filter(p => p.FirstName.Equals(FilteryQueryMarker.filterStringMarker.ToLower()), FilterOperation.Equal);
+
     }
 }
 ```

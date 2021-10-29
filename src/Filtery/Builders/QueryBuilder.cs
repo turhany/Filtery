@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using Filtery.Configuration.Filtery;
 using Filtery.Constants;
-using Filtery.Exceptions;
 using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Order;
@@ -21,8 +20,8 @@ namespace Filtery.Builders
             {
                 var mapping = mappings[filterItem.TargetFieldName.ToLower()];
 
-                var whereQuery = mapping.Expression.ToString();
-                foreach (var marker in  FilteryQueryMarker.ParameterCompareList)
+                var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation)).Expression.ToString();
+                foreach (var marker in  FilteryQueryValueMarker.ParameterCompareList)
                 {
                     if (whereQuery.Contains(marker))
                     {
@@ -40,8 +39,8 @@ namespace Filtery.Builders
             {
                 var mapping = mappings[filterItem.TargetFieldName.ToLower()];
                 
-                var whereQuery = mapping.Expression.ToString();
-                foreach (var marker in  FilteryQueryMarker.ParameterCompareList)
+                var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation)).Expression.ToString();
+                foreach (var marker in  FilteryQueryValueMarker.ParameterCompareList)
                 {
                     if (whereQuery.Contains(marker))
                     {

@@ -37,41 +37,25 @@ namespace Filtery.Samples
 
             var filteryQuery = new FilteryRequest
             {
-                
-                 AndFilters = new List<FilterItem>
-                 {
-                     new FilterItem {TargetFieldName = "name", Value = "Çağla", Operation = FilterOperation.Equal},
-                     //new FilterItem {TargetFieldName = "parentsnamecontains", Value = "Fatma"}, //Not work
-                     //new FilterItem {TargetFieldName = "parentsname", Value = "Fatma", Operation = FilterOperation.Contains}, //Not work
-                     //new FilterItem {TargetFieldName = "ages", Value = 20, Operation = FilterOperation.Contains}, //Not work
-                 },
-                
                 //String
                 // AndFilters = new List<FilterItem>
                 // {
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.Equal},
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.NotEqual},
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.Contains},
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.GreaterThan}, //Not work
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.LessThan}, //Not work
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.GreaterThanOrEqual}, //Not work
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.LessThanOrEqual}, //Not work
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.StartsWith},
-                //     new FilterItem {TargetFieldName = "name", Value = "test", Operation = FilterOperation.EndsWith}
+                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.Equal},
+                //     new FilterItem {TargetFieldName = "name", Value = "çağla", Operation = FilterOperation.NotEqual},
+                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.Contains},
+                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.StartsWith},
+                //     new FilterItem {TargetFieldName = "name", Value = "türhan", Operation = FilterOperation.EndsWith}
                 // },
                 
                 //integer
                 // AndFilters = new List<FilterItem>
                 // {
                 //     new FilterItem {TargetFieldName = "age", Value = 18, Operation = FilterOperation.Equal},
-                //     new FilterItem {TargetFieldName = "age", Value = 3, Operation = FilterOperation.NotEqual},
-                //     new FilterItem {TargetFieldName = "age", Value = 3, Operation = FilterOperation.Contains}, //Converted to Equal
-                //     new FilterItem {TargetFieldName = "age", Value = 3, Operation = FilterOperation.GreaterThan},
-                //     new FilterItem {TargetFieldName = "age", Value = 3, Operation = FilterOperation.LessThan},
-                //     new FilterItem {TargetFieldName = "age", Value = 3, Operation = FilterOperation.GreaterThanOrEqual},
-                //     new FilterItem {TargetFieldName = "age", Value = 3, Operation = FilterOperation.LessThanOrEqual},
-                //     new FilterItem {TargetFieldName = "age", Value = 3, Operation = FilterOperation.StartsWith}, //Converted to Equal
-                //     new FilterItem {TargetFieldName = "age", Value = 8, Operation = FilterOperation.EndsWith} //Converted to Equal
+                //     new FilterItem {TargetFieldName = "age", Value = 22, Operation = FilterOperation.NotEqual},
+                //     new FilterItem {TargetFieldName = "age", Value = 6, Operation = FilterOperation.GreaterThan},
+                //     new FilterItem {TargetFieldName = "age", Value = 22, Operation = FilterOperation.LessThan},
+                //     new FilterItem {TargetFieldName = "age", Value = 6, Operation = FilterOperation.GreaterThanOrEqual},
+                //     new FilterItem {TargetFieldName = "age", Value = 22, Operation = FilterOperation.LessThanOrEqual}
                 // },
                 
                 //datetime
@@ -79,34 +63,24 @@ namespace Filtery.Samples
                 // {
                 //     new FilterItem {TargetFieldName = "date", Value = new DateTime(1987, 06, 06), Operation = FilterOperation.Equal},
                 //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.NotEqual},
-                //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.Contains}, //Converted to Equal
-                //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.GreaterThan},
+                //     new FilterItem {TargetFieldName = "date", Value = new DateTime(1980, 06, 06), Operation = FilterOperation.GreaterThan},
                 //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.LessThan},
-                //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.GreaterThanOrEqual},
-                //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.LessThanOrEqual},
-                //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.StartsWith}, //Converted to Equal
-                //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.EndsWith} //Converted to Equal
+                //     new FilterItem {TargetFieldName = "date", Value = new DateTime(1980, 06, 06), Operation = FilterOperation.GreaterThanOrEqual},
+                //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.LessThanOrEqual}
                 // },
                 
                 //bool
                 // AndFilters = new List<FilterItem>
                 // {
-                //     new FilterItem {TargetFieldName = "licence", Value = false, Operation = FilterOperation.Equal},
-                //     new FilterItem {TargetFieldName = "licence", Value = false, Operation = FilterOperation.NotEqual},
-                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.Contains}, //Converted to Equal
-                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.GreaterThan}, //Not work
-                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.LessThan}, // Not work
-                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.GreaterThanOrEqual}, // Not work
-                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.LessThanOrEqual}, // Not work
-                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.StartsWith}, //Converted to Equal
-                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.EndsWith} //Converted to Equal
+                //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.Equal},
+                //     new FilterItem {TargetFieldName = "licence", Value = false, Operation = FilterOperation.NotEqual}
                 // },
                 
-                // OrFilters = new List<FilterItem>
-                // {
-                //     new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains },
-                //     new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains, CaseSensitive = true}
-                // },
+                //Navigation String List
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "parentnames", Value = "Fatma", Operation = FilterOperation.Contains}
+                },
                 
                 OrderOperations = new Dictionary<string, OrderOperation>
                 {

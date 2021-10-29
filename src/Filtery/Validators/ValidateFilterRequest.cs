@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Filtery.Configuration.Filtery;
 using Filtery.Constants;
@@ -27,14 +28,13 @@ namespace Filtery.Validators
                 .GetFieldValue<FilteryMapper<TEntity>>(FilteryConstant.MapperFiledName)
                 .GetFieldValue<Dictionary<string, FilteryMappingItem<TEntity>>>(FilteryConstant.MappingListFieldName);
             
-           
             foreach (var filterItem in filteryRequest.AndFilters)
             {
                 if (!mappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()))
                 {
                     throw new NotConfiguredFilterMappingException(filterItem.TargetFieldName.ToLowerInvariant());
                 }
-                if (mappings[filterItem.TargetFieldName.ToLowerInvariant()].FilterOperations.Contains(filterItem.Operation))
+                if (!mappings[filterItem.TargetFieldName.ToLowerInvariant()].FilteryMappings.SelectMany(p => p.FilterOperations).Contains(filterItem.Operation))
                 {
                     var message = $"'{filterItem.Operation.ToString()}' operation not supported for '{filterItem.TargetFieldName}'";
                     throw new NotSupportedFilterOperationForType(message);
@@ -47,7 +47,7 @@ namespace Filtery.Validators
                 {
                     throw new NotConfiguredFilterMappingException(filterItem.TargetFieldName.ToLowerInvariant());
                 }
-                if (mappings[filterItem.TargetFieldName.ToLowerInvariant()].FilterOperations.Contains(filterItem.Operation))
+                if (!mappings[filterItem.TargetFieldName.ToLowerInvariant()].FilteryMappings.SelectMany(p => p.FilterOperations).Contains(filterItem.Operation))
                 {
                     var message = $"'{filterItem.Operation.ToString()}' operation not supported for '{filterItem.TargetFieldName}'";
                     throw new NotSupportedFilterOperationForType(message);
