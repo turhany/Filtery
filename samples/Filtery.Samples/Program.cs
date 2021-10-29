@@ -77,7 +77,7 @@ namespace Filtery.Samples
                 // },
                 
                 //Navigation String List
-                AndFilters = new List<FilterItem>
+                OrFilters = new List<FilterItem>
                 {
                     new FilterItem {TargetFieldName = "parentnames", Value = "Fatma", Operation = FilterOperation.Contains}
                 },

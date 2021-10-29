@@ -19,18 +19,31 @@ namespace Filtery.Builders
             foreach (var filterItem in filteryRequest.AndFilters)
             {
                 var mapping = mappings[filterItem.TargetFieldName.ToLower()];
-
+                
                 var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation)).Expression.ToString();
                 foreach (var marker in  FilteryQueryValueMarker.ParameterCompareList)
                 {
                     if (whereQuery.Contains(marker))
                     {
                         whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
+                    }
+                }
+
+                var splittedQuery = whereQuery.Split(FilteryConstant.DefaultParameterName);
+                var values = new List<object>();
+                for (var i = 0; i < splittedQuery.Length - 1; i++)
+                {
+                    splittedQuery[i] += $"{FilteryConstant.DefaultParameterNamePrefix}{i}";
+                    values.Add(filterItem.Value);
+
+                    if ((i+1) >= splittedQuery.Length-1)
+                    {
                         break;
                     }
                 }
-                    
-                var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,filterItem.Value);
+
+                whereQuery = string.Join(string.Empty,splittedQuery);
+                var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,values);
                     
                 mainAndPredicate = mainAndPredicate.And(modifiedWhere);
             }
@@ -45,11 +58,24 @@ namespace Filtery.Builders
                     if (whereQuery.Contains(marker))
                     {
                         whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
+                    }
+                }
+
+                var splittedQuery = whereQuery.Split(FilteryConstant.DefaultParameterName);
+                var values = new List<object>();
+                for (var i = 0; i < splittedQuery.Length - 1; i++)
+                {
+                    splittedQuery[i] += $"{FilteryConstant.DefaultParameterNamePrefix}{i}";
+                    values.Add(filterItem.Value);
+
+                    if ((i+1) >= splittedQuery.Length-1)
+                    {
                         break;
                     }
                 }
-                    
-                var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,filterItem.Value);
+
+                whereQuery = string.Join(string.Empty,splittedQuery);
+                var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,values);
                     
                 mainOrPredicate = mainOrPredicate.And(modifiedWhere);
             }
