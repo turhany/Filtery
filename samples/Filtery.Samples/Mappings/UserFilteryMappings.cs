@@ -46,7 +46,7 @@ namespace Filtery.Samples.Mappings
             
             mapper
                 .NameWithoutOrder("parentnames")
-                .Filter(p => p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue) || p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains);
+                .Filter(p => p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains);
         }
     }
 }
