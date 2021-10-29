@@ -139,7 +139,7 @@ var filteryQuery = new FilteryRequest
     OrFilters = new List<FilterItem>
     {
         new FilterItem {TargetFieldName = "name", Value = "ça", Operation = FilterOperation.Contains },
-        new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains, CaseSensitive = true}
+        new FilterItem {TargetFieldName = "last", Value = "Yıl", Operation = FilterOperation.Contains}
     },
     OrderOperations = new Dictionary<string, OrderOperation>()
     {
