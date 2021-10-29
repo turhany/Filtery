@@ -2,7 +2,26 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Türhan Yıldırım</Authors>
+        <Description>Simple Filtering, Sorting and Paging library.</Description>
+        <PackageProjectUrl>https://github.com/turhany/Filtery</PackageProjectUrl>
+        <PackageIcon>filtery.png</PackageIcon>
+        <RepositoryUrl>https://github.com/turhany/Filtery</RepositoryUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageTags>Dynamic Filter, Filtering, Sorting, Paging</PackageTags>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\img\filtery.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.13" />
