@@ -13,8 +13,8 @@ namespace Filtery.Extensions
     { 
         public static IEnumerable<T> BuildFiltery<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            var (mappings, customMappings) = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
-            var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, customMappings);
+            var mappings= new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
+            var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings);
             
             return query;
         }

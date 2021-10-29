@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Filtery.Configuration.Filtery;
 using Filtery.Constants;
@@ -11,7 +12,7 @@ namespace Filtery.Validators
 {
     public class ValidateFilterRequest
     {
-        public (Dictionary<string, Expression<Func<T, object>>>, Dictionary<string, Expression<Func<T, bool>>>) Validate<T>(FilteryRequest filteryRequest, AbstractFilteryMapping<T> mappingConfiguration)
+        public Dictionary<string, FilteryMappingItem<TEntity>> Validate<TEntity>(FilteryRequest filteryRequest, AbstractFilteryMapping<TEntity> mappingConfiguration)
         {
             if (mappingConfiguration == null)
             {
@@ -24,41 +25,49 @@ namespace Filtery.Validators
             }
             
             var mappings = mappingConfiguration
-                .GetFieldValue<FilteryMapper<T>>(FilteryConstant.MapperFiledName)
-                .GetFieldValue<Dictionary<string, Expression<Func<T, object>>>>(FilteryConstant.MappingListFieldName);
-            
-            var customMappings = mappingConfiguration
-                .GetFieldValue<FilteryMapper<T>>(FilteryConstant.MapperFiledName)
-                .GetFieldValue<Dictionary<string, Expression<Func<T, bool>>>>(FilteryConstant.CustomMappingListFieldName);
+                .GetFieldValue<FilteryMapper<TEntity>>(FilteryConstant.MapperFiledName)
+                .GetFieldValue<Dictionary<string, FilteryMappingItem<TEntity>>>(FilteryConstant.MappingListFieldName);
             
             foreach (var filterItem in filteryRequest.AndFilters)
             {
-                if (!mappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()) &&
-                    !customMappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()))
+                if (!mappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()))
                 {
                     throw new NotConfiguredFilterMappingException(filterItem.TargetFieldName.ToLowerInvariant());
+                }
+                if (!mappings[filterItem.TargetFieldName.ToLowerInvariant()].FilteryMappings.SelectMany(p => p.FilterOperations).Contains(filterItem.Operation))
+                {
+                    var message = $"'{filterItem.Operation.ToString()}' operation not supported for '{filterItem.TargetFieldName}'";
+                    throw new NotSupportedFilterOperationForType(message);
                 }
             }
             
             foreach (var filterItem in filteryRequest.AndFilters)
             {
-                if (!mappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()) &&
-                    !customMappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()))
+                if (!mappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()))
                 {
                     throw new NotConfiguredFilterMappingException(filterItem.TargetFieldName.ToLowerInvariant());
+                }
+                if (!mappings[filterItem.TargetFieldName.ToLowerInvariant()].FilteryMappings.SelectMany(p => p.FilterOperations).Contains(filterItem.Operation))
+                {
+                    var message = $"'{filterItem.Operation.ToString()}' operation not supported for '{filterItem.TargetFieldName}'";
+                    throw new NotSupportedFilterOperationForType(message);
                 }
             }
             
             foreach (var orderOperation in filteryRequest.OrderOperations)
             {
-                if (!mappings.ContainsKey(orderOperation.Key.ToLowerInvariant()) &&
-                    !customMappings.ContainsKey(orderOperation.Key.ToLowerInvariant()))
+                if (!mappings.ContainsKey(orderOperation.Key.ToLowerInvariant()))
                 {
                     throw new NotConfiguredOrderException(orderOperation.Key.ToLowerInvariant());
                 }
+
+                if (mappings[orderOperation.Key.ToLowerInvariant()].OrderExpression == null)
+                {
+                    throw new NotConfiguredFilterMappingException($"Order Expression not found for Key: \"{orderOperation.Key}\"");
+                }
             }
 
-            return (mappings, customMappings);
+            return mappings;
         }
     }
 }

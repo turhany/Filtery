@@ -1,86 +1,86 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
+using Filtery.Configuration.Filtery;
 using Filtery.Constants;
 using Filtery.Extensions;
 using Filtery.Models;
-using Filtery.Models.Filter;
 using Filtery.Models.Order;
 
 namespace Filtery.Builders
 {
     internal class QueryBuilder
     {
-        internal IEnumerable<T> Build<T>(IEnumerable<T> list, FilteryRequest filteryRequest, 
-            Dictionary<string, Expression<Func<T, object>>> mappings,
-            Dictionary<string, Expression<Func<T, bool>>> customMappings)
+        internal IEnumerable<TEntity> Build<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
-            var mainAndPredicate = PredicateBuilder.True<T>();
-            var mainOrPredicate = PredicateBuilder.True<T>();
+            var mainAndPredicate = PredicateBuilder.True<TEntity>();
+            var mainOrPredicate = PredicateBuilder.True<TEntity>();
 
             foreach (var filterItem in filteryRequest.AndFilters)
             {
-                if (customMappings.ContainsKey(filterItem.TargetFieldName.ToLower()))
+                var mapping = mappings[filterItem.TargetFieldName.ToLower()];
+                
+                var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation)).Expression.ToString();
+                foreach (var marker in  FilteryQueryValueMarker.ParameterCompareList)
                 {
-                    var customMapping = customMappings[filterItem.TargetFieldName.ToLower()];
-                    
-                    var whereQuery = customMapping.ToString();
-                    foreach (var marker in  FilteryQueryMarker.ParameterCompareList)
+                    if (whereQuery.Contains(marker))
                     {
-                        if (whereQuery.Contains(marker))
-                        {
-                            whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
-                            break;
-                        }
+                        whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
                     }
-                    
-                    var modifiedWhere = DynamicExpressionParser.ParseLambda<T, bool>(new ParsingConfig(), true, whereQuery,filterItem.Value);
-                    
-                    mainAndPredicate = mainAndPredicate.And(modifiedWhere);
                 }
-                else
-                {
-                    var propertyName = GetPropertyName(filterItem, mappings);
-                    var operatorComparer = GetOperatorComparer(filterItem.Operation);
 
-                    var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
-                    mainAndPredicate = mainAndPredicate.And(predicate);    
+                var splittedQuery = whereQuery.Split(FilteryConstant.DefaultParameterName);
+                var values = new List<object>();
+                for (var i = 0; i < splittedQuery.Length - 1; i++)
+                {
+                    splittedQuery[i] += $"{FilteryConstant.DefaultParameterNamePrefix}{i}";
+                    values.Add(filterItem.Value);
+
+                    if ((i+1) >= splittedQuery.Length-1)
+                    {
+                        break;
+                    }
                 }
+
+                whereQuery = string.Join(string.Empty,splittedQuery);
+                var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,values);
+                    
+                mainAndPredicate = mainAndPredicate.And(modifiedWhere);
             }
 
             foreach (var filterItem in filteryRequest.OrFilters)
             {
-                if (customMappings.ContainsKey(filterItem.TargetFieldName.ToLower()))
+                var mapping = mappings[filterItem.TargetFieldName.ToLower()];
+                
+                var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation)).Expression.ToString();
+                foreach (var marker in  FilteryQueryValueMarker.ParameterCompareList)
                 {
-                    var customMapping = customMappings[filterItem.TargetFieldName.ToLower()];
-                    
-                    var whereQuery = customMapping.ToString();
-                    foreach (var marker in  FilteryQueryMarker.ParameterCompareList)
+                    if (whereQuery.Contains(marker))
                     {
-                        if (whereQuery.Contains(marker))
-                        {
-                            whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
-                            break;
-                        }
+                        whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
                     }
-                    
-                    var modifiedWhere = DynamicExpressionParser.ParseLambda<T, bool>(new ParsingConfig(), true, whereQuery,filterItem.Value);
-                    
-                    mainOrPredicate = mainOrPredicate.And(modifiedWhere);
                 }
-                else
-                {
-                    var propertyName = GetPropertyName(filterItem, mappings);
-                    var operatorComparer = GetOperatorComparer(filterItem.Operation);
 
-                    var predicate = ExpressionBuilder.BuildPredicate<T>(filterItem.Value, operatorComparer, filterItem.CaseSensitive, propertyName);
-                    mainOrPredicate = mainOrPredicate.And(predicate);    
+                var splittedQuery = whereQuery.Split(FilteryConstant.DefaultParameterName);
+                var values = new List<object>();
+                for (var i = 0; i < splittedQuery.Length - 1; i++)
+                {
+                    splittedQuery[i] += $"{FilteryConstant.DefaultParameterNamePrefix}{i}";
+                    values.Add(filterItem.Value);
+
+                    if ((i+1) >= splittedQuery.Length-1)
+                    {
+                        break;
+                    }
                 }
+
+                whereQuery = string.Join(string.Empty,splittedQuery);
+                var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,values);
+                    
+                mainOrPredicate = mainOrPredicate.And(modifiedWhere);
             }
 
-            var mainPredicate = PredicateBuilder.True<T>();
+            var mainPredicate = PredicateBuilder.True<TEntity>();
             mainPredicate = mainPredicate.And(mainAndPredicate);
             mainPredicate = mainPredicate.And(mainOrPredicate);
 
@@ -94,11 +94,11 @@ namespace Filtery.Builders
 
                 if (orderOperation.Value == OrderOperation.Ascending)
                 {
-                    list = list.OrderBy(propertyMapping.Compile());
+                    list = list.OrderBy(propertyMapping.OrderExpression.Compile());
                 }
                 else
                 {
-                    list = list.OrderByDescending(propertyMapping.Compile());
+                    list = list.OrderByDescending(propertyMapping.OrderExpression.Compile());
                 }
             }
 
@@ -106,81 +106,9 @@ namespace Filtery.Builders
             return list;
         }
 
-        private string GetPropertyName<T>(FilterItem filterItem, Dictionary<string, Expression<Func<T, object>>> mappings)
-        {
-            var expression = mappings[filterItem.TargetFieldName.ToLower()];
-            
-            MemberExpression me;
-            switch (expression.Body.NodeType)
-            {
-                case ExpressionType.Convert:
-                case ExpressionType.ConvertChecked:
-                    var ue = expression.Body as UnaryExpression;
-                    me = ue?.Operand as MemberExpression;
-                    break;
-                default:
-                    me = expression.Body as MemberExpression;
-                    break;
-            }
-
-            var propertyList = new List<string>();
-            while (me != null)
-            {
-                string propertyName = me.Member.Name;
-                Type propertyType = me.Type;
-                me = me.Expression as MemberExpression;
-                
-                Console.WriteLine(propertyName + ": " + propertyType);
-                propertyList.Add(propertyName);
-            }
-
-            var response = string.Join('.', propertyList);
-
-            return response;
-        }
-
-        private Expression<Func<T, object>> GetPropertyMapping<T>(string filterName, Dictionary<string, Expression<Func<T, object>>> mappings)
+        private FilteryMappingItem<TEntity> GetPropertyMapping<TEntity>(string filterName, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
             return mappings[filterName.ToLower()];
-        }
-
-        private OperatorComparer GetOperatorComparer(FilterOperation filterOperation)
-        {
-            OperatorComparer response;
-            switch (filterOperation)
-            {
-                case FilterOperation.Equal:
-                    response = OperatorComparer.Equals;
-                    break;
-                case FilterOperation.NotEqual:
-                    response = OperatorComparer.NotEqual;
-                    break;
-                case FilterOperation.Contains:
-                    response = OperatorComparer.Contains;
-                    break;
-                case FilterOperation.GreaterThan:
-                    response = OperatorComparer.GreaterThan;
-                    break;
-                case FilterOperation.LessThan:
-                    response = OperatorComparer.LessThan;
-                    break;
-                case FilterOperation.GreaterThanOrEqual:
-                    response = OperatorComparer.GreaterThanOrEqual;
-                    break;
-                case FilterOperation.LessThanOrEqual:
-                    response = OperatorComparer.LessThanOrEqual;
-                    break;
-                case FilterOperation.StartsWith:
-                    response = OperatorComparer.StartsWith;
-                    break;
-                case FilterOperation.EndsWith:
-                    response = OperatorComparer.EndsWith;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(filterOperation), filterOperation, null);
-            }
-
-            return response;
         }
     }
 }
