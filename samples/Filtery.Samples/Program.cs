@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Filtery.Exceptions;
 using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Filter;
@@ -91,8 +92,8 @@ namespace Filtery.Samples
                 PageSize = 2
             };
             
-            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
-
+            var response = userList.BuildFiltery(new UserFilteryMappings(), null).ToList();
+            
             Console.ReadKey();
         }
     }

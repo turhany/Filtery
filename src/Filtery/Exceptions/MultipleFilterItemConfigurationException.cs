@@ -2,7 +2,7 @@
 
 namespace Filtery.Exceptions
 {
-    internal class MultipleFilterItemConfigurationException : Exception
+    public class MultipleFilterItemConfigurationException : FilteryBaseException
     {
         public MultipleFilterItemConfigurationException(string message) : base(message)
         {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Filtery.Configuration.Filtery;
 using Filtery.Constants;
 using Filtery.Exceptions;
@@ -16,12 +14,12 @@ namespace Filtery.Validators
         {
             if (mappingConfiguration == null)
             {
-                throw new NullFilteryMappingException();
+                throw new NullFilteryMappingException("No filtery mapping for build filter query");
             }
 
             if (filteryRequest == null)
             {
-                throw new NullFilterRequestException();
+                throw new NullFilterRequestException("No filtery request for build filter query");
             }
             
             var mappings = mappingConfiguration

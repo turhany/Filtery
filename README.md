@@ -248,5 +248,8 @@ var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).To
 
 ### Release Notes
 
+##### 1.0.1
+* Base exception type added > FilteryBaseException
+
 ##### 1.0.0
 * Base releases

@@ -2,7 +2,7 @@
 
 namespace Filtery.Exceptions
 {
-    public class NotSupportedFilterOperationForType : Exception
+    public class NotSupportedFilterOperationForType : FilteryBaseException
     {
         public NotSupportedFilterOperationForType(string message) : base(message) 
         {

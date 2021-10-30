@@ -2,8 +2,11 @@
 
 namespace Filtery.Exceptions
 {
-    internal class NullFilteryMappingException : Exception
+    public class NullFilteryMappingException : FilteryBaseException
     {
-        
+        public NullFilteryMappingException(string message) : base(message)
+        {
+            
+        }
     }
 }
