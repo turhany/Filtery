@@ -242,13 +242,27 @@ var filteryQuery = new FilteryRequest
     PageSize = 2
 };
 
-var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
+var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+Console.WriteLine(response.PageNumber);
+Console.WriteLine(response.PageSize);
+Console.WriteLine(response.TotalPageCount);
 
-var responseQueryable = userList.AsQueryable().BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
+var responseQueryable = userList.AsQueryable().BuildFiltery(new UserFilteryMappings(), filteryQuery);
+Console.WriteLine(responseQueryable.PageNumber);
+Console.WriteLine(responseQueryable.PageSize);
+Console.WriteLine(responseQueryable.TotalPageCount);
 
 ```
 
 ### Release Notes
+
+##### 1.0.4
+* BuildFiltery now return FilteryResponse type it contains
+    * Data > filtered response result
+    * PageNumber
+    * PageSize
+    * TotalItemCount
+    * TotalPageCount
 
 ##### 1.0.3
 * 0 and below paging bug fix

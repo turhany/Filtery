@@ -11,12 +11,18 @@ namespace Filtery.Extensions
 {
     public static class IEnumerableExtensions
     { 
-        public static IEnumerable<T> BuildFiltery<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
+        public static FilteryResponse<T> BuildFiltery<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
             var mappings= new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
-            var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings);
+            var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, out int totalItemCount);
             
-            return query;
+            return new FilteryResponse<T>
+            {
+                Data = query.ToList(),
+                PageNumber = filteryRequest.PageNumber,
+                PageSize = filteryRequest.PageSize,
+                TotalItemCount = totalItemCount
+            };
         }
          
         internal static IEnumerable<T> GetPage<T>(this IEnumerable<T> list, int pageNumber, int pageSize)

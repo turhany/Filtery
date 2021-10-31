@@ -11,8 +11,9 @@ namespace Filtery.Builders
 {
     internal class QueryBuilder
     {
-        internal IEnumerable<TEntity> Build<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
+        internal IEnumerable<TEntity> Build<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings, out int totalItemCount)
         {
+            totalItemCount = 0;
             var mainAndPredicate = PredicateBuilder.True<TEntity>();
             var mainOrPredicate = PredicateBuilder.True<TEntity>();
 
@@ -102,12 +103,16 @@ namespace Filtery.Builders
                 }
             }
 
+            totalItemCount = list.Count();
+            
             list = list.GetPage(filteryRequest.PageNumber, filteryRequest.PageSize);
             return list;
         }
         
-        internal IQueryable<TEntity> Build<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
+        internal IQueryable<TEntity> Build<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings,  out int totalItemCount)
         {
+            totalItemCount = 0;
+            
             var mainAndPredicate = PredicateBuilder.True<TEntity>();
             var mainOrPredicate = PredicateBuilder.True<TEntity>();
 
@@ -197,6 +202,8 @@ namespace Filtery.Builders
                 }
             }
 
+            totalItemCount = list.Count();
+            
             list = list.GetPage(filteryRequest.PageNumber, filteryRequest.PageSize);
             return list;
         }
