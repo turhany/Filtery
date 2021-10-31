@@ -250,6 +250,9 @@ var responseQueryable = userList.AsQueryable().BuildFiltery(new UserFilteryMappi
 
 ### Release Notes
 
+##### 1.0.3
+* 0 and below paging bug fix
+
 ##### 1.0.2
 * IQueryable support added
 * Filter query build bug fixed

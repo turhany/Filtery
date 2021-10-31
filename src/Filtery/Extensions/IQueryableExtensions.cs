@@ -20,6 +20,12 @@ namespace Filtery.Extensions
         internal static IQueryable<T> GetPage<T>(this IQueryable<T> list, int pageNumber, int pageSize)
         {
             pageNumber -= 1;
+            
+            if (pageNumber <= 0)
+            {
+                pageNumber = 1;
+            }
+            
             return list.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
         }
     }

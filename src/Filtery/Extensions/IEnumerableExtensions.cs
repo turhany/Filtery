@@ -22,6 +22,12 @@ namespace Filtery.Extensions
         internal static IEnumerable<T> GetPage<T>(this IEnumerable<T> list, int pageNumber, int pageSize)
         {
             pageNumber -= 1;
+            
+            if (pageNumber <= 0)
+            {
+                pageNumber = 1;
+            }
+            
             return list.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
         }
     }
