@@ -244,12 +244,18 @@ var filteryQuery = new FilteryRequest
 
 var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
 
+var responseQueryable = userList.AsQueryable().BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
+
 ```
 
 ### Release Notes
 
+##### 1.0.2
+* IQueryable support added
+* Filter query build bug fixed
+
 ##### 1.0.1
-* Base exception type added > FilteryBaseException
+* Base exception type added > FilteryBaseException  (deprecated)
 
 ##### 1.0.0
-* Base releases
+* Base releases  (deprecated)

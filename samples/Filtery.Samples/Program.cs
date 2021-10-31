@@ -92,7 +92,9 @@ namespace Filtery.Samples
                 PageSize = 2
             };
             
-            var response = userList.BuildFiltery(new UserFilteryMappings(), null).ToList();
+            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
+            
+            var responseQueryable = userList.AsQueryable().BuildFiltery(new UserFilteryMappings(), filteryQuery).ToList();
             
             Console.ReadKey();
         }
