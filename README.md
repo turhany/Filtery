@@ -257,7 +257,7 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 ### Release Notes
 
 ##### 1.0.4
-* BuildFiltery now return FilteryResponse type it contains
+* BuildFiltery now return FilteryResponse type, it contains
     * Data > filtered response result
     * PageNumber
     * PageSize
