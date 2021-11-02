@@ -263,7 +263,7 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ##### 1.0.5
 * Source code refactored
-* Page size negatize number check added. (When it comes 0 set for page size)
+* Page size negative number check added. (When it comes, 0 set for page size)
 
 ##### 1.0.4
 * BuildFiltery now return FilteryResponse type, it contains
