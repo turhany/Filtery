@@ -34,6 +34,11 @@ namespace Filtery.Extensions
                 pageNumber = 1;
             }
             
+            if (pageSize < 0)
+            {
+                pageNumber = 0;
+            }
+            
             return list.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
         }
     }

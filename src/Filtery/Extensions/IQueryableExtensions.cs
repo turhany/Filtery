@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Filtery.Builders;
 using Filtery.Configuration.Filtery;
 using Filtery.Models;
@@ -30,6 +29,11 @@ namespace Filtery.Extensions
             if (pageNumber <= 0)
             {
                 pageNumber = 1;
+            }
+            
+            if (pageSize < 0)
+            {
+                pageNumber = 0;
             }
             
             return list.Skip(pageSize * (pageNumber - 1)).Take(pageSize);

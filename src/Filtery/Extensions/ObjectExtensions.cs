@@ -11,16 +11,8 @@ namespace Filtery.Extensions
             var fieldInfo = item.GetFieldInfo(fieldName);
             return (T)fieldInfo.GetValue(item);
         }
-        
-        public static T SetFieldValue<T>(this object item, string fieldName, T value)
-        {
-            var fieldInfo = item.GetFieldInfo(fieldName);
-            fieldInfo.SetValue(item, value);
 
-            return value;
-        }
-
-        public static FieldInfo GetFieldInfo(this object item, string fieldName)
+        private static FieldInfo GetFieldInfo(this object item, string fieldName)
         {
             if (item == null)
             {
@@ -42,7 +34,5 @@ namespace Filtery.Extensions
 
             return fieldInfo;
         }
-        
-        public static bool In<T>(this T item, params T[] array) => array.Contains(item);
     }
 }

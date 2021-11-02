@@ -6,27 +6,37 @@ using System.Linq.Expressions;
 namespace Filtery.Builders
 {
     //https://www.c-sharpcorner.com/UploadFile/c42694/dynamic-query-in-linq-using-predicate-builder/
-       internal static class PredicateBuilder
+    internal static class PredicateBuilder
     {
         /// <summary>    
         /// Creates a predicate that evaluates to true.    
         /// </summary>    
-        public static Expression<Func<T, bool>> True<T>() { return param => true; }
+        public static Expression<Func<T, bool>> True<T>()
+        {
+            return param => true;
+        }
 
         /// <summary>    
         /// Creates a predicate that evaluates to false.    
         /// </summary>    
-        public static Expression<Func<T, bool>> False<T>() { return param => false; }
+        public static Expression<Func<T, bool>> False<T>()
+        {
+            return param => false;
+        }
 
         /// <summary>    
         /// Creates a predicate expression from the specified lambda expression.    
         /// </summary>    
-        public static Expression<Func<T, bool>> Create<T>(Expression<Func<T, bool>> predicate) { return predicate; }
+        public static Expression<Func<T, bool>> Create<T>(Expression<Func<T, bool>> predicate)
+        {
+            return predicate;
+        }
 
         /// <summary>    
         /// Combines the first predicate with the second using the logical "and".    
         /// </summary>    
-        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first,
+            Expression<Func<T, bool>> second)
         {
             return first.Compose(second, Expression.AndAlso);
         }
@@ -34,7 +44,8 @@ namespace Filtery.Builders
         /// <summary>    
         /// Combines the first predicate with the second using the logical "or".    
         /// </summary>    
-        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first,
+            Expression<Func<T, bool>> second)
         {
             return first.Compose(second, Expression.OrElse);
         }
@@ -51,11 +62,12 @@ namespace Filtery.Builders
         /// <summary>    
         /// Combines the first expression with the second using the specified merge function.    
         /// </summary>    
-        public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
+        public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second,
+            Func<Expression, Expression, Expression> merge)
         {
             // zip parameters (map from parameters of second to parameters of first)    
             var map = first.Parameters
-                .Select((f, i) => new { f, s = second.Parameters[i] })
+                .Select((f, i) => new {f, s = second.Parameters[i]})
                 .ToDictionary(p => p.s, p => p.f);
 
             // replace parameters in the second lambda expression with the parameters in the first    
@@ -81,7 +93,8 @@ namespace Filtery.Builders
                 this._map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
             }
 
-            public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
+            public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map,
+                Expression exp)
             {
                 return new ParameterRebinder(map).Visit(exp);
             }
@@ -96,7 +109,5 @@ namespace Filtery.Builders
                 return base.VisitParameter(node);
             }
         }
-
-
     }
 }

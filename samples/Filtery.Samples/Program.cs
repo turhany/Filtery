@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Filtery.Exceptions;
+using System.Linq; 
 using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Filter;

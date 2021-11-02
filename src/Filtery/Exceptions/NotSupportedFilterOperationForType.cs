@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Filtery.Exceptions
+﻿namespace Filtery.Exceptions
 {
     public class NotSupportedFilterOperationForType : FilteryBaseException
     {
