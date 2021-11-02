@@ -129,7 +129,11 @@ public class UserFilteryMappings : IFilteryMapping<User>
 
 ```cs
 // ConfigureServices setting for MVC flow (AddNewtonsoftJson())
-services.AddControllers().AddNewtonsoftJson();
+public void ConfigureServices(IServiceCollection services)
+{
+	services.AddControllers().AddNewtonsoftJson();
+}
+
 
 [HttpGet]
 public JsonResult GetUsers(FilteryRequest request) 
