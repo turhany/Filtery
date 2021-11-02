@@ -128,7 +128,8 @@ public class UserFilteryMappings : IFilteryMapping<User>
 ##### MVC Flow Usage Sample:
 
 ```cs
-
+// ConfigureServices setting for MVC flow (AddNewtonsoftJson())
+services.AddControllers().AddNewtonsoftJson();
 
 [HttpGet]
 public JsonResult GetUsers(FilteryRequest request) 
