@@ -10,7 +10,7 @@ Simple Lambda Expression base Filtering, Sorting and Paging  library.
 - "Key" > "Filter Query" and "Operation "mapping for search
 - "Key" > "Order Property" matching
 - You are free to write Filter Operation mathed filter query 
-- Support paging (Default Page Number = 1, Default Page Size = 20)
+- Paging Support
 
 #### Supported Filter Operations:
 - Equal
