@@ -2,7 +2,7 @@
 
 ![alt tag](/img/filtery.png)  
 
-Simple Filtering, Sorting and Paging  library.
+Simple Lambda Expression base Filtering, Sorting and Paging  library.
 
 [![NuGet version](https://badge.fury.io/nu/Filtery.svg)](https://badge.fury.io/nu/Filtery)  ![Nuget](https://img.shields.io/nuget/dt/Filtery)
 
