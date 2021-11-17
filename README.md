@@ -9,7 +9,7 @@ Simple Lambda Expression base Filtering, Sorting and Paging  library.
 #### Features:
 - "Key" > "Filter Query" and "Operation "mapping for search
 - "Key" > "Order Property" matching
-- You are free to write Filter Operation mathed filter query 
+- You are free to write Filter Operation matched filter query 
 - Paging Support
 
 #### Supported Filter Operations:
