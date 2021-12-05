@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Filtery.Models;
 using Filtery.Models.Filter;
 using Filtery.Tests;
@@ -448,6 +449,28 @@ namespace Filtery.Extensions.Tests
 
             //act
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert
+            Assert.AreEqual(response.TotalItemCount, 1);
+            Assert.AreEqual(response.Data.First().FirstName, "John");
+        }
+        
+        [TestMethod()]
+        public async Task BuildFiltery_Equal_Async()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal}
+                },
+                PageNumber = 1,
+                PageSize = 2
+            };
+
+            //act
+            FilteryResponse<User> response = await SampleQueryableList.BuildFilteryAsync(new UserFilteryMappings(), filteryQuery);
 
             //assert
             Assert.AreEqual(response.TotalItemCount, 1);

@@ -4,7 +4,7 @@
 
 Simple Lambda Expression base Filtering, Sorting and Paging  library.
 
-[![NuGet version](https://badge.fury.io/nu/Filtery.svg)](https://badge.fury.io/nu/Filtery)  ![Nuget](https://img.shields.io/nuget/dt/Filtery)
+[![NuGet version](https://badge.fury.io/nu/Filtery.svg)](https://badge.fury.io/nu/Filtery)  ![Nuget](https://img.shields.io/nuget/dt/Filtery) ![alt tag](https://img.shields.io/badge/coverage-80%25-green)
 
 #### Features:
 - "Key" > "Filter Query" and "Operation "mapping for search
@@ -261,6 +261,9 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.6
+* BuildFilteryAsync method added
+
 ##### 1.0.5
 * Source code refactored
 * Page size negative number check added. (When it comes, 0 set for page size)
@@ -285,3 +288,6 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ##### 1.0.0
 * Base releases  (deprecated)
+
+#### Code Coverage
+![alt tag](img/lastcodecoverage.png)  
