@@ -1,4 +1,5 @@
-﻿namespace Filtery.Tests.Model
+﻿#pragma warning disable 8618
+namespace Filtery.Tests.Model
 {
     public class Address
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+#pragma warning disable 8618
 
 namespace Filtery.Tests.Model
 {
