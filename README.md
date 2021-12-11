@@ -1,5 +1,3 @@
-#   **Filtery**
-
 ![alt tag](/img/filtery.png)  
 
 Simple Lambda Expression base Filtering, Sorting and Paging  library.
