@@ -101,7 +101,7 @@ public class UserFilteryMappings : IFilteryMapping<User>
         
         mapper
             .Name("date")
-            .OrderProperty(p => p.Age)
+            .OrderProperty(p => p.Birthdate)
             .Filter(p => p.Birthdate == FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.Equal)
             .Filter(p => p.Birthdate != FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.NotEqual)
             .Filter(p => p.Birthdate > FilteryQueryValueMarker.FilterDateTimeValue, FilterOperation.GreaterThan)
