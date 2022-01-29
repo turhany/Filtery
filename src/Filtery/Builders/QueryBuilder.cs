@@ -9,6 +9,7 @@ using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Filter;
 using Filtery.Models.Order;
+
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -16,73 +17,111 @@ namespace Filtery.Builders
 {
     internal class QueryBuilder
     {
-        internal IEnumerable<TEntity> Build<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings, out int totalItemCount)
+        internal IEnumerable<TEntity> Build<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest,
+            Dictionary<string, FilteryMappingItem<TEntity>> mappings, out int totalItemCount)
         {
             totalItemCount = 0;
-            
+
             var finalExpression = BuildMainFilterQueryExpression(filteryRequest, mappings).Compile();
             list = list.Where(finalExpression);
 
             AddOrderOperations(list, filteryRequest, mappings);
 
             totalItemCount = list.Count();
-            
+
             list = list.GetPage(filteryRequest.PageNumber, filteryRequest.PageSize);
             return list;
         }
-        
-        internal IQueryable<TEntity> Build<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings,  out int totalItemCount)
+
+        internal IQueryable<TEntity> Build<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest,
+            Dictionary<string, FilteryMappingItem<TEntity>> mappings, out int totalItemCount)
         {
             totalItemCount = 0;
-            
+
             var finalExpression = BuildMainFilterQueryExpression(filteryRequest, mappings);
             list = list.Where(finalExpression);
 
             AddOrderOperations(list, filteryRequest, mappings);
 
             totalItemCount = list.Count();
-            
+
             list = list.GetPage(filteryRequest.PageNumber, filteryRequest.PageSize);
             return list;
         }
 
         #region Private Methods
 
-        private FilteryMappingItem<TEntity> GetPropertyMapping<TEntity>(string filterName, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
+        private FilteryMappingItem<TEntity> GetPropertyMapping<TEntity>(string filterName,
+            Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
             return mappings[filterName.ToLower()];
         }
 
-        private Expression<Func<TEntity, bool>> BuildMainFilterQueryExpression<TEntity>(FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
+        private Expression<Func<TEntity, bool>> BuildMainFilterQueryExpression<TEntity>(FilteryRequest filteryRequest,
+            Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
-            var mainAndPredicate = PredicateBuilder.True<TEntity>();
-            var mainOrPredicate = PredicateBuilder.True<TEntity>();
+            Expression<Func<TEntity, bool>> mainPredicate = null;
+            Expression<Func<TEntity, bool>> mainAndPredicate = null;
+            Expression<Func<TEntity, bool>> mainOrPredicate = null;
 
             foreach (var filterItem in filteryRequest.AndFilters)
             {
                 var whereExpression = GenerateFilterQueryExpression(mappings, filterItem);
-                mainAndPredicate = mainAndPredicate.And(whereExpression);
+
+                if (mainAndPredicate == null)
+                {
+                    mainAndPredicate = PredicateBuilder.Create(whereExpression);
+                }
+                else
+                {
+                    mainAndPredicate = mainAndPredicate.And(whereExpression);
+                }
             }
 
             foreach (var filterItem in filteryRequest.OrFilters)
             {
                 var whereExpression = GenerateFilterQueryExpression(mappings, filterItem);
-                mainOrPredicate = mainOrPredicate.Or(whereExpression);
+
+                if (mainOrPredicate == null)
+                {
+                    mainOrPredicate = PredicateBuilder.Create(whereExpression);
+                }
+                else
+                {
+                    mainOrPredicate = mainOrPredicate.Or(whereExpression);
+                }
             }
 
-            var mainPredicate = PredicateBuilder.True<TEntity>();
-            mainPredicate = mainPredicate.And(mainAndPredicate);
-            mainPredicate = mainPredicate.And(mainOrPredicate);
+
+            if (mainAndPredicate == null && mainOrPredicate == null)
+            {
+                mainPredicate = PredicateBuilder.True<TEntity>();
+            }
+            else if (mainAndPredicate != null && mainOrPredicate != null)
+            {
+                mainPredicate = PredicateBuilder.Create(mainAndPredicate);
+                mainPredicate = mainPredicate.And(mainOrPredicate);
+            }
+            else if (mainAndPredicate != null)
+            {
+                mainPredicate = PredicateBuilder.Create(mainAndPredicate);
+            }
+            else
+            {
+                mainPredicate = PredicateBuilder.Create(mainOrPredicate);
+            }
 
             return mainPredicate;
         }
-        
-        private Expression<Func<TEntity, bool>> GenerateFilterQueryExpression<TEntity>(Dictionary<string, FilteryMappingItem<TEntity>> mappings, FilterItem filterItem )
+
+        private Expression<Func<TEntity, bool>> GenerateFilterQueryExpression<TEntity>(
+            Dictionary<string, FilteryMappingItem<TEntity>> mappings, FilterItem filterItem)
         {
             var mapping = mappings[filterItem.TargetFieldName.ToLower()];
-                
-            var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation)).Expression.ToString();
-            foreach (var marker in  FilteryQueryValueMarker.ParameterCompareList)
+
+            var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation))
+                .Expression.ToString();
+            foreach (var marker in FilteryQueryValueMarker.ParameterCompareList)
             {
                 if (whereQuery.Contains(marker))
                 {
@@ -97,19 +136,22 @@ namespace Filtery.Builders
                 splittedQuery[i] += $"{FilteryConstant.DefaultParameterNamePrefix}{i}";
                 values.Add(filterItem.Value);
 
-                if ((i+1) >= splittedQuery.Length-1)
+                if ((i + 1) >= splittedQuery.Length - 1)
                 {
                     break;
                 }
             }
 
-            whereQuery = string.Join(string.Empty,splittedQuery);
-            var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,values.ToArray());
+            whereQuery = string.Join(string.Empty, splittedQuery);
+            var modifiedWhere =
+                DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,
+                    values.ToArray());
 
             return modifiedWhere;
         }
 
-        private void AddOrderOperations<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
+        private void AddOrderOperations<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest,
+            Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
             foreach (var orderOperation in filteryRequest.OrderOperations)
             {
@@ -126,7 +168,8 @@ namespace Filtery.Builders
             }
         }
 
-        private void AddOrderOperations<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest, Dictionary<string, FilteryMappingItem<TEntity>> mappings)
+        private void AddOrderOperations<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest,
+            Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
             foreach (var orderOperation in filteryRequest.OrderOperations)
             {
@@ -142,7 +185,6 @@ namespace Filtery.Builders
                 }
             }
         }
-        
 
         #endregion
     }

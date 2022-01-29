@@ -78,9 +78,14 @@ namespace Filtery.Samples
                 // },
                 
                 //Navigation Property String List
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
+                },
                 OrFilters = new List<FilterItem>
                 {
-                    new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains}
+                    new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains},
+                    new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
                 },
                 
                 OrderOperations = new Dictionary<string, OrderOperation>

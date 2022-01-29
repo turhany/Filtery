@@ -259,6 +259,9 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.8
+* Query generate flow bug fix
+
 ##### 1.0.7
 * OrFilters query generate bug fix
 
