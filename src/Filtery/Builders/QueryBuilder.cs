@@ -67,7 +67,7 @@ namespace Filtery.Builders
             foreach (var filterItem in filteryRequest.OrFilters)
             {
                 var whereExpression = GenerateFilterQueryExpression(mappings, filterItem);
-                mainOrPredicate = mainOrPredicate.And(whereExpression);
+                mainOrPredicate = mainOrPredicate.Or(whereExpression);
             }
 
             var mainPredicate = PredicateBuilder.True<TEntity>();
