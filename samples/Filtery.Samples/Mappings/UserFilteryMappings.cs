@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel;
 using Filtery.Configuration.Filtery;
 using Filtery.Constants;
 using Filtery.Models.Filter;
@@ -47,6 +49,11 @@ namespace Filtery.Samples.Mappings
             mapper
                 .NameWithoutOrder("parentnames")
                 .Filter(p => p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains);
+
+            mapper
+                .Name("sex")
+                .OrderProperty(p => p.Sex)
+                .Filter(p => p.Sex.GetHashCode() == FilteryQueryValueMarker.FilterIntValue, FilterOperation.Equal);
         }
     }
 }

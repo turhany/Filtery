@@ -12,5 +12,6 @@ namespace Filtery.Samples.Model
         public DateTime Birthdate { get; set; }
         public Address Address { get; set; }
         public List<string> ParentNames { get; set; }
+        public Sex Sex { get; set; }
     }
 }

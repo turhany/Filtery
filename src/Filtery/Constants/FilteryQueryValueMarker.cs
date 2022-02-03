@@ -37,7 +37,7 @@ namespace Filtery.Constants
 
         public static readonly bool FilterBooleanValue = true;
         public static readonly bool? FilterNullableBooleanValue = null;
-
+         
         internal static readonly List<string> ParameterCompareList = new List<string>
         {
             "FilteryQueryValueMarker.FilterStringValue",

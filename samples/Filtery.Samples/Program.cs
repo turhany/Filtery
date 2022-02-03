@@ -20,6 +20,7 @@ namespace Filtery.Samples
                 FirstName = "John", 
                 LastName = "Doe", 
                 Age = 22, 
+                Sex = Sex.Male,
                 HasDriverLicence = true, 
                 Birthdate = new DateTime(1987, 06, 06), 
                 Address = new Address{Country = "Netherland", City = "Amsterdam"},
@@ -30,6 +31,7 @@ namespace Filtery.Samples
                 FirstName = "Alisa", 
                 LastName = "Doe", 
                 Age = 18, 
+                Sex = Sex.Female,
                 HasDriverLicence = true, 
                 Birthdate = new DateTime(1997, 09, 27), 
                 Address = new Address{Country = "Mexico", City = "Merida"},
@@ -78,15 +80,22 @@ namespace Filtery.Samples
                 // },
                 
                 //Navigation Property String List
+                // AndFilters = new List<FilterItem>
+                // {
+                //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
+                // },
+                // OrFilters = new List<FilterItem>
+                // {
+                //     new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains},
+                //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
+                // },
+                
+                //Enum
                 AndFilters = new List<FilterItem>
                 {
-                    new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
+                    new FilterItem {TargetFieldName = "sex", Value = 1, Operation = FilterOperation.Equal}
                 },
-                OrFilters = new List<FilterItem>
-                {
-                    new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains},
-                    new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
-                },
+                
                 
                 OrderOperations = new Dictionary<string, OrderOperation>
                 {
