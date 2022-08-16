@@ -32,6 +32,7 @@ Simple Lambda Expression base Filtering, Sorting and Paging  library.
 ```cs
 public class User
 {
+    public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public int Age { get; set; }
@@ -74,6 +75,8 @@ You should mark the place where the filtering value should come from in the filt
 * FilterNullableDateTimeValue
 * FilterBooleanValue         
 * FilterNullableBooleanValue
+* FilterGuidValue
+* FilterNullableGuidValue
 
 ```cs
 public class UserFilteryMappings : IFilteryMapping<User>
@@ -118,6 +121,12 @@ public class UserFilteryMappings : IFilteryMapping<User>
         mapper
             .NameWithoutOrder("parentnames")
             .Filter(p => p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains);
+        
+        mapper
+            .Name("id")
+            .OrderProperty(p => p.Id)
+            .Filter(p => p.Id == FilteryQueryValueMarker.FilterGuidValue, FilterOperation.Equal)
+            .Filter(p => p.Id != FilteryQueryValueMarker.FilterGuidValue, FilterOperation.NotEqual);
 
     }
 }
@@ -171,6 +180,7 @@ public JsonResult GetUsers(FilteryRequest request)
 var userList = new List<User>();
 userList.Add(new User
 {
+    Id = Guid.NewGuid(),
     FirstName = "John", 
     LastName = "Doe", 
     Age = 22, 
@@ -181,6 +191,7 @@ userList.Add(new User
 });
 userList.Add(new User
 {
+    Id = Guid.NewGuid(),
     FirstName = "Alisa", 
     LastName = "Doe", 
     Age = 18, 
@@ -232,9 +243,15 @@ var filteryQuery = new FilteryRequest
     // },
     
     //Navigation Property String List
-    OrFilters = new List<FilterItem>
+    //OrFilters = new List<FilterItem>
+    //{
+    //    new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains}
+    //},
+
+    //Guid
+    AndFilters = new List<FilterItem>
     {
-        new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains}
+        new FilterItem {TargetFieldName = "id", Value = userList.First().Id, Operation = FilterOperation.Equal}
     },
     
     OrderOperations = new Dictionary<string, OrderOperation>
@@ -258,6 +275,10 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 ```
 
 ### Release Notes
+
+##### 1.0.9
+* FilterGuidValue and FilterNullableGuidValue marker type added
+* System.Linq.Dynamic.Core version updated to 1.2.19
 
 ##### 1.0.8
 * Query generate flow bug fix

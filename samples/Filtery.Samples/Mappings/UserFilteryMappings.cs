@@ -13,7 +13,7 @@ namespace Filtery.Samples.Mappings
         {
             mapper
                 .Name("name")
-                .OrderProperty(p =>p.FirstName)
+                .OrderProperty(p => p.FirstName)
                 .Filter(p => p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Equal)
                 .Filter(p => !p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.NotEqual)
                 .Filter(p => p.FirstName.ToLower().Contains(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Contains)
@@ -29,7 +29,7 @@ namespace Filtery.Samples.Mappings
                 .Filter(p => p.Age < FilteryQueryValueMarker.FilterIntValue, FilterOperation.LessThan)
                 .Filter(p => p.Age >= FilteryQueryValueMarker.FilterIntValue, FilterOperation.GreaterThanOrEqual)
                 .Filter(p => p.Age <= FilteryQueryValueMarker.FilterIntValue, FilterOperation.LessThanOrEqual);
-            
+
             mapper
                 .Name("date")
                 .OrderProperty(p => p.Age)
@@ -45,7 +45,7 @@ namespace Filtery.Samples.Mappings
                 .OrderProperty(p => p.HasDriverLicence)
                 .Filter(p => p.HasDriverLicence == FilteryQueryValueMarker.FilterBooleanValue, FilterOperation.Equal)
                 .Filter(p => p.HasDriverLicence != FilteryQueryValueMarker.FilterBooleanValue, FilterOperation.NotEqual);
-            
+
             mapper
                 .NameWithoutOrder("parentnames")
                 .Filter(p => p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains);
@@ -54,6 +54,12 @@ namespace Filtery.Samples.Mappings
                 .Name("sex")
                 .OrderProperty(p => p.Sex)
                 .Filter(p => p.Sex.GetHashCode() == FilteryQueryValueMarker.FilterIntValue, FilterOperation.Equal);
+
+            mapper
+                .Name("id")
+                .OrderProperty(p => p.Id)
+                .Filter(p => p.Id == FilteryQueryValueMarker.FilterGuidValue, FilterOperation.Equal)
+                .Filter(p => p.Id != FilteryQueryValueMarker.FilterGuidValue, FilterOperation.NotEqual);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Filtery.Samples
             var userList = new List<User>();
             userList.Add(new User
             {
+                Id = Guid.NewGuid(),
                 FirstName = "John", 
                 LastName = "Doe", 
                 Age = 22, 
@@ -28,6 +29,7 @@ namespace Filtery.Samples
             });
             userList.Add(new User
             {
+                Id = Guid.NewGuid(),
                 FirstName = "Alisa", 
                 LastName = "Doe", 
                 Age = 18, 
@@ -49,7 +51,7 @@ namespace Filtery.Samples
                 //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.StartsWith},
                 //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.EndsWith}
                 // },
-                
+
                 //integer
                 // AndFilters = new List<FilterItem>
                 // {
@@ -60,7 +62,7 @@ namespace Filtery.Samples
                 //     new FilterItem {TargetFieldName = "age", Value = 6, Operation = FilterOperation.GreaterThanOrEqual},
                 //     new FilterItem {TargetFieldName = "age", Value = 22, Operation = FilterOperation.LessThanOrEqual}
                 // },
-                
+
                 //datetime
                 // AndFilters = new List<FilterItem>
                 // {
@@ -71,14 +73,14 @@ namespace Filtery.Samples
                 //     new FilterItem {TargetFieldName = "date", Value = new DateTime(1980, 06, 06), Operation = FilterOperation.GreaterThanOrEqual},
                 //     new FilterItem {TargetFieldName = "date", Value = DateTime.Now, Operation = FilterOperation.LessThanOrEqual}
                 // },
-                
+
                 //bool
                 // AndFilters = new List<FilterItem>
                 // {
                 //     new FilterItem {TargetFieldName = "licence", Value = true, Operation = FilterOperation.Equal},
                 //     new FilterItem {TargetFieldName = "licence", Value = false, Operation = FilterOperation.NotEqual}
                 // },
-                
+
                 //Navigation Property String List
                 // AndFilters = new List<FilterItem>
                 // {
@@ -89,14 +91,19 @@ namespace Filtery.Samples
                 //     new FilterItem {TargetFieldName = "parentnames", Value = "Sera", Operation = FilterOperation.Contains},
                 //     new FilterItem {TargetFieldName = "name", Value = "john", Operation = FilterOperation.Equal},
                 // },
-                
+
                 //Enum
+                //AndFilters = new List<FilterItem>
+                //{
+                //    new FilterItem {TargetFieldName = "sex", Value = 1, Operation = FilterOperation.Equal}
+                //},
+
+                //Guid
                 AndFilters = new List<FilterItem>
                 {
-                    new FilterItem {TargetFieldName = "sex", Value = 1, Operation = FilterOperation.Equal}
+                    new FilterItem {TargetFieldName = "id", Value = userList.First().Id, Operation = FilterOperation.Equal}
                 },
-                
-                
+
                 OrderOperations = new Dictionary<string, OrderOperation>
                 {
                     {"name", OrderOperation.Ascending}

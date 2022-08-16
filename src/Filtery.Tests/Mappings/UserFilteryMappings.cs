@@ -47,6 +47,12 @@ namespace Filtery.Tests.Mappings
             mapper
                 .NameWithoutOrder("parentnames")
                 .Filter(p => p.ParentNames.Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains);
+
+            mapper
+                .Name("id")
+                .OrderProperty(p => p.Id)
+                .Filter(p => p.Id == FilteryQueryValueMarker.FilterGuidValue, FilterOperation.Equal)
+                .Filter(p => p.Id != FilteryQueryValueMarker.FilterGuidValue, FilterOperation.NotEqual);
         }
     }
 }

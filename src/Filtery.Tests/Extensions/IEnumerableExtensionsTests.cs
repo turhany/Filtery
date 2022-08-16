@@ -476,5 +476,47 @@ namespace Filtery.Extensions.Tests
             Assert.AreEqual(response.TotalItemCount, 1);
             Assert.AreEqual(response.Data.First().FirstName, "John");
         }
+
+        [TestMethod()]
+        public void BuildFiltery_Equal_Guid()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "id", Value = SampleList.First().Id, Operation = FilterOperation.Equal}
+                },
+                PageNumber = 1,
+                PageSize = 2
+            };
+
+            //act
+            FilteryResponse<User> response = SampleList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert
+            Assert.AreEqual(response.TotalItemCount, 2);
+        }
+
+        [TestMethod()]
+        public void BuildFiltery_NotEqual_Guid()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "id", Value = Guid.NewGuid(), Operation = FilterOperation.NotEqual}
+                },
+                PageNumber = 1,
+                PageSize = 2
+            };
+
+            //act
+            FilteryResponse<User> response = SampleList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert
+            Assert.AreEqual(response.TotalItemCount, 2);
+        }
     }
 }

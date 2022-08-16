@@ -37,7 +37,10 @@ namespace Filtery.Constants
 
         public static readonly bool FilterBooleanValue = true;
         public static readonly bool? FilterNullableBooleanValue = null;
-         
+
+        public static readonly Guid FilterGuidValue = Guid.Empty;
+        public static readonly Guid? FilterNullableGuidValue = null;
+
         internal static readonly List<string> ParameterCompareList = new List<string>
         {
             "FilteryQueryValueMarker.FilterStringValue",
@@ -60,7 +63,9 @@ namespace Filtery.Constants
             "FilteryQueryValueMarker.FilterDateTimeValue",
             "FilteryQueryValueMarker.FilterNullableDateTimeValue",
             "FilteryQueryValueMarker.FilterBooleanValue",
-            "FilteryQueryValueMarker.FilterNullableBooleanValue"
+            "FilteryQueryValueMarker.FilterNullableBooleanValue",
+            "FilteryQueryValueMarker.FilterGuidValue",
+            "FilteryQueryValueMarker.FilterNullableGuidValue"
         };
     }
 }
