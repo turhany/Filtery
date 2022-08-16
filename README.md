@@ -148,6 +148,7 @@ public JsonResult GetUsers(FilteryRequest request)
     var userList = new List<User>();
     userList.Add(new User
     {
+    	Id = Guid.NewGuid(),
         FirstName = "John", 
         LastName = "Doe", 
         Age = 22, 
@@ -158,6 +159,7 @@ public JsonResult GetUsers(FilteryRequest request)
     });
     userList.Add(new User
     {
+    	Id = Guid.NewGuid(),
         FirstName = "Alisa", 
         LastName = "Doe", 
         Age = 18, 
