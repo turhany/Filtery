@@ -278,6 +278,9 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.10
+* Paging bug fixed
+
 ##### 1.0.9
 * FilterGuidValue and FilterNullableGuidValue marker type added
 * System.Linq.Dynamic.Core version updated to 1.2.19

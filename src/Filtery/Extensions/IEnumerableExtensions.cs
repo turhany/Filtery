@@ -12,12 +12,12 @@ using Filtery.Validators;
 namespace Filtery.Extensions
 {
     public static class IEnumerableExtensions
-    { 
+    {
         public static FilteryResponse<T> BuildFiltery<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            var mappings= new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
+            var mappings = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
             var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, out int totalItemCount);
-            
+
             return new FilteryResponse<T>
             {
                 Data = query.ToList(),
@@ -26,13 +26,13 @@ namespace Filtery.Extensions
                 TotalItemCount = totalItemCount
             };
         }
-        
+
         public static async Task<FilteryResponse<T>> BuildFilteryAsync<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            var mappings= new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
+            var mappings = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
             var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, out int totalItemCount);
-            
-            return  new FilteryResponse<T>
+
+            return new FilteryResponse<T>
             {
                 Data = await query.ToDynamicListAsync<T>(),
                 PageNumber = filteryRequest.PageNumber,
@@ -40,22 +40,22 @@ namespace Filtery.Extensions
                 TotalItemCount = totalItemCount
             };
         }
-         
+
         internal static IEnumerable<T> GetPage<T>(this IEnumerable<T> list, int pageNumber, int pageSize)
         {
-            pageNumber -= 1;
-            
             if (pageNumber <= 0)
             {
                 pageNumber = 1;
             }
-            
+
             if (pageSize < 0)
             {
                 pageNumber = 0;
             }
-            
-            return list.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+
+            pageNumber -= 1;
+
+            return list.Skip(pageSize * pageNumber).Take(pageSize).ToList();
         }
     }
 }

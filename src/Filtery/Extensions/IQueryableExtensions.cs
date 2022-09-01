@@ -12,9 +12,9 @@ namespace Filtery.Extensions
     {
         public static FilteryResponse<T> BuildFiltery<T>(this IQueryable<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            var mappings= new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
+            var mappings = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
             var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, out int totalItemCount);
-            
+
             return new FilteryResponse<T>
             {
                 Data = query.ToList(),
@@ -23,12 +23,12 @@ namespace Filtery.Extensions
                 TotalItemCount = totalItemCount
             };
         }
-        
+
         public static async Task<FilteryResponse<T>> BuildFilteryAsync<T>(this IQueryable<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            var mappings= new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
+            var mappings = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
             var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, out int totalItemCount);
-            
+
             return new FilteryResponse<T>
             {
                 Data = await query.ToDynamicListAsync<T>(),
@@ -37,22 +37,22 @@ namespace Filtery.Extensions
                 TotalItemCount = totalItemCount
             };
         }
-         
+
         internal static IQueryable<T> GetPage<T>(this IQueryable<T> list, int pageNumber, int pageSize)
         {
-            pageNumber -= 1;
-            
             if (pageNumber <= 0)
             {
                 pageNumber = 1;
             }
-            
+
             if (pageSize < 0)
             {
                 pageNumber = 0;
             }
-            
-            return list.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+
+            pageNumber -= 1;
+
+            return list.Skip(pageSize * pageNumber).Take(pageSize);
         }
     }
 }

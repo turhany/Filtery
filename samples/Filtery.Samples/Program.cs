@@ -109,19 +109,19 @@ namespace Filtery.Samples
                     {"name", OrderOperation.Ascending}
                 },
                 PageNumber = 1,
-                PageSize = 2
+                PageSize = 1
             };
-            
-            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);            
             Console.WriteLine(response.PageNumber);
             Console.WriteLine(response.PageSize);
             Console.WriteLine(response.TotalPageCount);
-            
+
             var responseQueryable = userList.AsQueryable().BuildFiltery(new UserFilteryMappings(), filteryQuery);
             Console.WriteLine(responseQueryable.PageNumber);
             Console.WriteLine(responseQueryable.PageSize);
             Console.WriteLine(responseQueryable.TotalPageCount);
-            
+
             Console.ReadKey();
         }
     }
