@@ -278,6 +278,10 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.14
+* System.Linq.Dynamic.Core version updated to 1.3.3
+* Test and Sample project .net version updated to .Net 7
+
 ##### 1.0.13
 * System.Linq.Dynamic.Core version updated to 1.2.24
 
