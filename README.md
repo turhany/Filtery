@@ -79,9 +79,9 @@ You should mark the place where the filtering value should come from in the filt
 * FilterNullableGuidValue
 
 ```cs
-public class UserFilteryMappings : IFilteryMapping<User>
+public class UserFilteryMappings : AbstractFilteryMapping<User>
 {
-    public void FilteryMappings(FilteryMapper<User> mapper)
+    public void FilteryMappings()
     {
         mapper
             .Name("name")
