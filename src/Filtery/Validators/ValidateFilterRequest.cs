@@ -35,7 +35,7 @@ namespace Filtery.Validators
                 ValidateFilterOperationSupport(mappings, filterItem);
             }
 
-            foreach (var filterItem in filteryRequest.AndFilters)
+            foreach (var filterItem in filteryRequest.OrFilters)
             {
                 ValidateFilterOperationSupport(mappings, filterItem);
             }

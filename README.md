@@ -278,7 +278,10 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
-##### 1.0.14
+##### 1.0.16
+* Validate or filter bug fixed.
+
+##### 1.0.15
 * System.Linq.Dynamic.Core version updated to 1.5.0
 * Test and Sample project .net version updated to .Net 9
 
