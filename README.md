@@ -278,6 +278,9 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.17
+* Dependecy version rule updated for System.Linq.Dynamic.Core as "1.*"
+
 ##### 1.0.16
 * Validate or filter bug fixed.
 
