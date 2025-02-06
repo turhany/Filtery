@@ -121,10 +121,18 @@ namespace Filtery.Builders
 
             var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation))
                 .Expression.ToString();
+
+            var isDateTimeMarker = false;
             foreach (var marker in FilteryQueryValueMarker.ParameterCompareList)
             {
                 if (whereQuery.Contains(marker))
                 {
+                    if (marker.Contains(nameof(FilteryQueryValueMarker.FilterDateTimeValue)) || 
+                        marker.Contains(nameof(FilteryQueryValueMarker.FilterNullableDateTimeValue)))
+                    {
+                        isDateTimeMarker = true;
+                    }
+                    
                     whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
                 }
             }
@@ -134,6 +142,12 @@ namespace Filtery.Builders
             for (var i = 0; i < splittedQuery.Length - 1; i++)
             {
                 splittedQuery[i] += $"{FilteryConstant.DefaultParameterNamePrefix}{i}";
+
+                if (isDateTimeMarker && filterItem.Value.GetType() != typeof(DateTime))
+                {
+                    filterItem.Value = DateTime.Parse(filterItem.Value.ToString());
+                }
+                
                 values.Add(filterItem.Value);
 
                 if ((i + 1) >= splittedQuery.Length - 1)
