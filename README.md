@@ -16,8 +16,8 @@ Simple Lambda Expression base Filtering, Sorting and Paging  library.
 - Contains
 - GreaterThan
 - LessThan
-- GreaterThanAndEqual
-- LessThanAndEqual
+- GreaterThanOrEqual
+- LessThanOrEqual
 - StartsWith
 - EndsWith
 
