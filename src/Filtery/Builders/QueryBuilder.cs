@@ -145,7 +145,7 @@ namespace Filtery.Builders
 
                 if (isDateTimeMarker && filterItem.Value.GetType() != typeof(DateTime))
                 {
-                    filterItem.Value = DateTime.Parse(filterItem.Value.ToString());
+                    filterItem.Value = DateTime.Parse(filterItem.Value.ToString()).ToUniversalTime();
                 }
                 
                 values.Add(filterItem.Value);
