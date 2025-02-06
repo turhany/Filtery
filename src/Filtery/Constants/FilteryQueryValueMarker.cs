@@ -34,6 +34,9 @@ namespace Filtery.Constants
 
         public static readonly DateTime FilterDateTimeValue = DateTime.Now;
         public static readonly DateTime? FilterNullableDateTimeValue = null;
+        
+        public static readonly DateTime FilterDateTimeUtcValue = DateTime.Now;
+        public static readonly DateTime? FilterNullableDateTimeUtcValue = null;
 
         public static readonly bool FilterBooleanValue = true;
         public static readonly bool? FilterNullableBooleanValue = null;
@@ -62,6 +65,8 @@ namespace Filtery.Constants
             "FilteryQueryValueMarker.FilterNullableDoubleValue",
             "FilteryQueryValueMarker.FilterDateTimeValue",
             "FilteryQueryValueMarker.FilterNullableDateTimeValue",
+            "FilteryQueryValueMarker.FilterDateTimeUtcValue",
+            "FilteryQueryValueMarker.FilterNullableDateTimeUtcValue",
             "FilteryQueryValueMarker.FilterBooleanValue",
             "FilteryQueryValueMarker.FilterNullableBooleanValue",
             "FilteryQueryValueMarker.FilterGuidValue",

@@ -10,7 +10,7 @@
         <RepositoryUrl>https://github.com/turhany/Filtery</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageTags>Dynamic Filter, Filtering, Sorting, Paging</PackageTags>
-        <PackageVersion>1.0.20-beta</PackageVersion>
+        <PackageVersion>1.0.21-beta</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

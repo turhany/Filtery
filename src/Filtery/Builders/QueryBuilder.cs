@@ -123,6 +123,7 @@ namespace Filtery.Builders
                 .Expression.ToString();
 
             var isDateTimeMarker = false;
+            var isDateTimeUtcMarker = false;
             foreach (var marker in FilteryQueryValueMarker.ParameterCompareList)
             {
                 if (whereQuery.Contains(marker))
@@ -131,6 +132,11 @@ namespace Filtery.Builders
                         marker.Contains(nameof(FilteryQueryValueMarker.FilterNullableDateTimeValue)))
                     {
                         isDateTimeMarker = true;
+                    }
+                    else if (marker.Contains(nameof(FilteryQueryValueMarker.FilterDateTimeUtcValue)) || 
+                        marker.Contains(nameof(FilteryQueryValueMarker.FilterNullableDateTimeUtcValue)))
+                    {
+                        isDateTimeUtcMarker = true;
                     }
                     
                     whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
@@ -144,6 +150,10 @@ namespace Filtery.Builders
                 splittedQuery[i] += $"{FilteryConstant.DefaultParameterNamePrefix}{i}";
 
                 if (isDateTimeMarker && filterItem.Value.GetType() != typeof(DateTime))
+                {
+                    filterItem.Value = DateTime.Parse(filterItem.Value.ToString());
+                }
+                else if (isDateTimeUtcMarker && filterItem.Value.GetType() != typeof(DateTime))
                 {
                     filterItem.Value = DateTime.Parse(filterItem.Value.ToString()).ToUniversalTime();
                 }
