@@ -73,6 +73,8 @@ You should mark the place where the filtering value should come from in the filt
 * FilterNullableDoubleValue
 * FilterDateTimeValue  
 * FilterNullableDateTimeValue
+* FilterDateTimeUtcValue
+* FilterNullableDateTimeUtcValue
 * FilterBooleanValue         
 * FilterNullableBooleanValue
 * FilterGuidValue
@@ -277,6 +279,9 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 ```
 
 ### Release Notes
+
+##### 1.0.22
+* System.Linq.Dynamic.Core version updated to 1.6.0.1
 
 ##### 1.0.17
 * Dependecy version rule updated for System.Linq.Dynamic.Core as "1.*"
