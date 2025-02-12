@@ -101,26 +101,28 @@ namespace Filtery.Samples
                 //Guid
                 AndFilters = new List<FilterItem>
                 {
-                    new FilterItem {TargetFieldName = "id", Value = userList.First().Id, Operation = FilterOperation.Equal}
+                    new FilterItem {TargetFieldName = "id", Value = Guid.NewGuid(), Operation = FilterOperation.NotEqual}
                 },
 
                 OrderOperations = new Dictionary<string, OrderOperation>
                 {
-                    {"name", OrderOperation.Ascending}
+                    {"name", OrderOperation.Descending}
                 },
                 PageNumber = 1,
-                PageSize = 1
+                PageSize = 10
             };
 
             var response = userList.BuildFiltery(new UserFilteryMappings(), filteryQuery);            
             Console.WriteLine(response.PageNumber);
             Console.WriteLine(response.PageSize);
             Console.WriteLine(response.TotalPageCount);
+            Console.WriteLine(response.Data.First().FirstName);
 
             var responseQueryable = userList.AsQueryable().BuildFiltery(new UserFilteryMappings(), filteryQuery);
             Console.WriteLine(responseQueryable.PageNumber);
             Console.WriteLine(responseQueryable.PageSize);
             Console.WriteLine(responseQueryable.TotalPageCount);
+            Console.WriteLine(responseQueryable.Data.First().FirstName);
 
             Console.ReadKey();
         }

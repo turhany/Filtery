@@ -280,6 +280,10 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.23
+* Order operation bug fixed
+* System.Linq.Dynamic.Core version updated to 1.6.0.2
+
 ##### 1.0.22
 * System.Linq.Dynamic.Core version updated to 1.6.0.1
 

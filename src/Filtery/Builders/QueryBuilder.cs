@@ -25,7 +25,7 @@ namespace Filtery.Builders
             var finalExpression = BuildMainFilterQueryExpression(filteryRequest, mappings).Compile();
             list = list.Where(finalExpression);
 
-            AddOrderOperations(list, filteryRequest, mappings);
+            list = AddOrderOperations(list, filteryRequest, mappings);
 
             totalItemCount = list.Count();
 
@@ -41,7 +41,7 @@ namespace Filtery.Builders
             var finalExpression = BuildMainFilterQueryExpression(filteryRequest, mappings);
             list = list.Where(finalExpression);
 
-            AddOrderOperations(list, filteryRequest, mappings);
+            list = AddOrderOperations(list, filteryRequest, mappings);
 
             totalItemCount = list.Count();
 
@@ -174,7 +174,7 @@ namespace Filtery.Builders
             return modifiedWhere;
         }
 
-        private void AddOrderOperations<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest,
+        private IEnumerable<TEntity> AddOrderOperations<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest,
             Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
             foreach (var orderOperation in filteryRequest.OrderOperations)
@@ -190,9 +190,11 @@ namespace Filtery.Builders
                     list = list.OrderByDescending(propertyMapping.OrderExpression.Compile());
                 }
             }
+
+            return list;
         }
 
-        private void AddOrderOperations<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest,
+        private IQueryable<TEntity> AddOrderOperations<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest,
             Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
             foreach (var orderOperation in filteryRequest.OrderOperations)
@@ -208,6 +210,8 @@ namespace Filtery.Builders
                     list = list.OrderByDescending(propertyMapping.OrderExpression);
                 }
             }
+
+            return list;
         }
 
         #endregion

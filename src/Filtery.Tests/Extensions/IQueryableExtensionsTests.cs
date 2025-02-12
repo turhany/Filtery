@@ -3,10 +3,12 @@ using Filtery.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 using Filtery.Models;
 using Filtery.Models.Filter;
+using Filtery.Models.Order;
 using Filtery.Tests;
 using Filtery.Tests.Mappings;
 using Filtery.Tests.Model;
@@ -517,6 +519,56 @@ namespace Filtery.Extensions.Tests
 
             //assert
             Assert.AreEqual(response.TotalItemCount, 2);
+        }
+        
+        [TestMethod()]
+        public void BuildFiltery_OrderBy_ASC()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "id", Value = Guid.NewGuid(), Operation = FilterOperation.NotEqual}
+                },
+                OrderOperations = new Dictionary<string, OrderOperation>()
+                {
+                    {"age", OrderOperation.Ascending}  
+                },
+                PageNumber = 1,
+                PageSize = 2
+            };
+
+            //act
+            FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert
+            Assert.AreEqual(response.Data.First().Age, SampleQueryableList.OrderBy(p => p.Age).First().Age);
+        }
+        
+        [TestMethod()]
+        public void BuildFiltery_OrderBy_DESC()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "id", Value = Guid.NewGuid(), Operation = FilterOperation.NotEqual}
+                },
+                OrderOperations = new Dictionary<string, OrderOperation>()
+                {
+                    {"age", OrderOperation.Descending}  
+                },
+                PageNumber = 1,
+                PageSize = 2
+            };
+
+            //act
+            FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert
+            Assert.AreEqual(response.Data.First().Age, SampleQueryableList.OrderByDescending(p => p.Age).First().Age);
         }
     }
 }
