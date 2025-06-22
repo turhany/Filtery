@@ -9,21 +9,22 @@ Simple Lambda Expression base Filtering, Sorting and Paging  library.
 - "Key" > "Order Property" matching
 - You are free to write Filter Operation matched filter query 
 - Paging Support
+- System.Text.Json Filter Operation name converter
 
 #### Supported Filter Operations:
-- Equal
-- NotEqual
-- Contains
-- GreaterThan
-- LessThan
-- GreaterThanOrEqual
-- LessThanOrEqual
-- StartsWith
-- EndsWith
+- Equal = 0
+- NotEqual = 1
+- Contains = 2
+- GreaterThan = 3
+- LessThan = 4
+- GreaterThanOrEqual = 5
+- LessThanOrEqual = 6
+- StartsWith = 7
+- EndsWith = 8
 
 #### Supported Order Operations:
-- Ascending
-- Descending
+- Ascending = 0
+- Descending = 1
 
 #### Usages:
 
@@ -178,6 +179,17 @@ public JsonResult GetUsers(FilteryRequest request)
 
 ```
 
+##### System.Text.Json Base Request Mapping Usage Sample(Minimal Api etc):
+```cs
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<JsonOptions>(options =>
+{ 
+    options.SerializerOptions.Converters.Add(new FilterOperationConverter()); 
+});
+
+```
+
 ##### Usage Sample:
 
 ```cs
@@ -279,6 +291,10 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 ```
 
 ### Release Notes
+
+##### 1.0.24
+* FilterOperationConverter added.
+* System.Linq.Dynamic.Core version updated to 1.6.6
 
 ##### 1.0.23
 * Order operation bug fixed
