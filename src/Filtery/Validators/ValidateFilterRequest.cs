@@ -18,7 +18,7 @@ namespace Filtery.Validators
         {
             if (mappingConfiguration == null)
             {
-                throw new NullFilteryMappingException("No filtery mapping for build filter query");
+                throw new NullFilteryMappingException("No filtery mapping configuration for build filter query");
             }
 
             if (filteryRequest == null)
@@ -54,7 +54,7 @@ namespace Filtery.Validators
         {
             if (!mappings.ContainsKey(filterItem.TargetFieldName.ToLowerInvariant()))
             {
-                throw new NotConfiguredFilterMappingException(filterItem.TargetFieldName.ToLowerInvariant());
+                throw new NotConfiguredFilterMappingException($"Target Field configuration not found for Key: \"{filterItem.TargetFieldName.ToLowerInvariant()}\"");
             }
 
             if (!mappings[filterItem.TargetFieldName.ToLowerInvariant()].FilteryMappings.SelectMany(p => p.FilterOperations).Contains(filterItem.Operation))
@@ -67,12 +67,12 @@ namespace Filtery.Validators
         {
             if (!mappings.ContainsKey(orderOperation.Key.ToLowerInvariant()))
             {
-                throw new NotConfiguredOrderException(orderOperation.Key.ToLowerInvariant());
+                throw new NotConfiguredOrderException($"Order Key configuration not found for Key: \"{orderOperation.Key.ToLowerInvariant()}\"");
             }
 
             if (mappings[orderOperation.Key.ToLowerInvariant()].OrderExpression == null)
             {
-                throw new NotConfiguredFilterMappingException($"Order Expression not found for Key: \"{orderOperation.Key}\"");
+                throw new NotConfiguredFilterMappingException($"Order Expression configuration not found for Key: \"{orderOperation.Key}\"");
             }
         }
 
