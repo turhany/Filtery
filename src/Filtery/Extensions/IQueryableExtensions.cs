@@ -10,10 +10,13 @@ namespace Filtery.Extensions
 {
     public static class IQueryableExtensions
     {
+        private static readonly ValidateFilterRequest _validator = new ValidateFilterRequest();
+        private static readonly QueryBuilder _queryBuilder = new QueryBuilder();
+
         public static FilteryResponse<T> BuildFiltery<T>(this IQueryable<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            var mappings = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
-            var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, out int totalItemCount);
+            var mappings = _validator.Validate(filteryRequest, mappingConfiguration);
+            var query = _queryBuilder.Build<T>(list, filteryRequest, mappings, out int totalItemCount);
 
             return new FilteryResponse<T>
             {
@@ -26,8 +29,8 @@ namespace Filtery.Extensions
 
         public static async Task<FilteryResponse<T>> BuildFilteryAsync<T>(this IQueryable<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
-            var mappings = new ValidateFilterRequest().Validate(filteryRequest, mappingConfiguration);
-            var query = new QueryBuilder().Build<T>(list, filteryRequest, mappings, out int totalItemCount);
+            var mappings = _validator.Validate(filteryRequest, mappingConfiguration);
+            var query = _queryBuilder.Build<T>(list, filteryRequest, mappings, out int totalItemCount);
 
             return new FilteryResponse<T>
             {

@@ -292,6 +292,10 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.26
+* FilterOperationConverter added.
+* System.Linq.Dynamic.Core version updated to 1.6.7
+
 ##### 1.0.25
 * Exception messages updated.
 
