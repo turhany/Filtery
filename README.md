@@ -292,6 +292,11 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.27
+* Performance improvement
+* System.Linq.Dynamic.Core version updated to 1.6.10
+* System.Text.Json version updated to 9.0.10
+
 ##### 1.0.26
 * Performance improvement
 * System.Linq.Dynamic.Core version updated to 1.6.7
