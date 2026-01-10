@@ -16,6 +16,14 @@ namespace Filtery.Extensions
         private static readonly ValidateFilterRequest _validator = new ValidateFilterRequest();
         private static readonly QueryBuilder _queryBuilder = new QueryBuilder();
 
+        public static IEnumerable<T> BuildFilteryQuery<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
+        {
+            var mappings = _validator.Validate(filteryRequest, mappingConfiguration);
+            var query = _queryBuilder.Build<T>(list, filteryRequest, mappings, out int totalItemCount);            
+
+            return query;
+        }
+
         public static FilteryResponse<T> BuildFiltery<T>(this IList<T> list, AbstractFilteryMapping<T> mappingConfiguration, FilteryRequest filteryRequest)
         {
             var mappings = _validator.Validate(filteryRequest, mappingConfiguration);
