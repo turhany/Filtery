@@ -292,6 +292,9 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.29
+* "FilteryQueryGenerateException" type added to handle query building flow exceptions.
+
 ##### 1.0.28
 * "BuildFilteryQuery" extension method added for only create query not run for IQueryable flow. Only return IQueryable response.
 * System.Linq.Dynamic.Core version updated to 1.7.1

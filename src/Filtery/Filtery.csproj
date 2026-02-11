@@ -10,7 +10,7 @@
         <RepositoryUrl>https://github.com/turhany/Filtery</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageTags>Dynamic Filter, Filtering, Sorting, Paging</PackageTags>
-        <PackageVersion>1.0.28</PackageVersion>
+        <PackageVersion>1.0.29</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,7 +26,7 @@
 
     <ItemGroup>
       <PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.1" />
-      <PackageReference Include="System.Text.Json" Version="9.0.11" />
+      <PackageReference Include="System.Text.Json" Version="10.0.3" />
     </ItemGroup>
 
 </Project>

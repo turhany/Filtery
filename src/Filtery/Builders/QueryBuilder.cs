@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using Filtery.Configuration.Filtery;
+﻿using Filtery.Configuration.Filtery;
 using Filtery.Constants;
+using Filtery.Exceptions;
 using Filtery.Extensions;
 using Filtery.Models;
 using Filtery.Models.Filter;
 using Filtery.Models.Order;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Text;
 
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 // ReSharper disable PossibleMultipleEnumeration
@@ -128,17 +130,17 @@ namespace Filtery.Builders
             {
                 if (whereQuery.Contains(marker))
                 {
-                    if (marker.Contains(nameof(FilteryQueryValueMarker.FilterDateTimeValue)) || 
+                    if (marker.Contains(nameof(FilteryQueryValueMarker.FilterDateTimeValue)) ||
                         marker.Contains(nameof(FilteryQueryValueMarker.FilterNullableDateTimeValue)))
                     {
                         isDateTimeMarker = true;
                     }
-                    else if (marker.Contains(nameof(FilteryQueryValueMarker.FilterDateTimeUtcValue)) || 
+                    else if (marker.Contains(nameof(FilteryQueryValueMarker.FilterDateTimeUtcValue)) ||
                         marker.Contains(nameof(FilteryQueryValueMarker.FilterNullableDateTimeUtcValue)))
                     {
                         isDateTimeUtcMarker = true;
                     }
-                    
+
                     whereQuery = whereQuery.Replace(marker, FilteryConstant.DefaultParameterName);
                 }
             }
@@ -157,7 +159,7 @@ namespace Filtery.Builders
                 {
                     filterItem.Value = DateTime.Parse(filterItem.Value.ToString()).ToUniversalTime();
                 }
-                
+
                 values.Add(filterItem.Value);
 
                 if ((i + 1) >= splittedQuery.Length - 1)
@@ -167,11 +169,22 @@ namespace Filtery.Builders
             }
 
             whereQuery = string.Join(string.Empty, splittedQuery);
-            var modifiedWhere =
-                DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery,
-                    values.ToArray());
+            try
+            {
+                var modifiedWhere = DynamicExpressionParser.ParseLambda<TEntity, bool>(new ParsingConfig(), true, whereQuery, values.ToArray());
+                return modifiedWhere;
+            }
+            catch (Exception ex)
+            {
+                StringBuilder exceptionMessageBuilder = new StringBuilder();
+                exceptionMessageBuilder.AppendLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    exceptionMessageBuilder.AppendLine(ex.InnerException.Message);
+                }
 
-            return modifiedWhere;
+                throw new FilteryQueryGenerateException(exceptionMessageBuilder.ToString());
+            }
         }
 
         private IEnumerable<TEntity> AddOrderOperations<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest,
