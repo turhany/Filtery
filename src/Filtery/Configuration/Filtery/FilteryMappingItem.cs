@@ -8,5 +8,6 @@ namespace Filtery.Configuration.Filtery
     {
         public List<FilteryMapping<T>> FilteryMappings { get; set; }
         public Expression<Func<T,object>> OrderExpression { get; set; }
+        public Func<object, object> ValueDecorator { get; set; }
     }
 }

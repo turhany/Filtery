@@ -10,6 +10,7 @@ Simple Lambda Expression base Filtering, Sorting and Paging  library.
 - You are free to write Filter Operation matched filter query 
 - Paging Support
 - System.Text.Json Filter Operation name converter
+- Decorate filter value before use in filter operation
 
 #### Supported Filter Operations:
 - Equal = 0
@@ -89,11 +90,12 @@ public class UserFilteryMappings : AbstractFilteryMapping<User>
         mapper
             .Name("name")
             .OrderProperty(p =>p.FirstName)
-            .Filter(p => p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Equal)
-            .Filter(p => !p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.NotEqual)
-            .Filter(p => p.FirstName.ToLower().Contains(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Contains)
-            .Filter(p => p.FirstName.ToLower().StartsWith(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.StartsWith)
-            .Filter(p => p.FirstName.ToLower().EndsWith(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.EndsWith);
+            .ValueDecorator(value => ((string)value).ToLower()) 
+            .Filter(p => p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Equal)
+            .Filter(p => !p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue), FilterOperation.NotEqual)
+            .Filter(p => p.FirstName.ToLower().Contains(FilteryQueryValueMarker.FilterStringValue), FilterOperation.Contains)
+            .Filter(p => p.FirstName.ToLower().StartsWith(FilteryQueryValueMarker.FilterStringValue), FilterOperation.StartsWith)
+            .Filter(p => p.FirstName.ToLower().EndsWith(FilteryQueryValueMarker.FilterStringValue), FilterOperation.EndsWith);
 
         mapper
             .Name("age")
@@ -291,6 +293,9 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 ```
 
 ### Release Notes
+
+##### 1.0.31
+* "ValueDecorator" feature added.
 
 ##### 1.0.30
 * Multiple order by bug fixed.  

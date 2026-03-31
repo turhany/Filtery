@@ -703,5 +703,48 @@ namespace Filtery.Extensions.Tests
             //assert — page 0 treated as page 1, returns first item
             Assert.AreEqual(1, response.Data.Count);
         }
+
+        [TestMethod()]
+        public void BuildFiltery_ValueDecorator_Should_Trim_Value()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "name", Value = "  John  ", Operation = FilterOperation.Equal}
+                },
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            //act
+            FilteryResponse<User> response = SampleList.BuildFiltery(new UserFilteryMappingsWithValueDecorator(), filteryQuery);
+
+            //assert — ValueDecorator trims "  John  " to "John", so it should match
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
+        }
+
+        [TestMethod()]
+        public void BuildFiltery_Without_ValueDecorator_Should_Not_Trim_Value()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem {TargetFieldName = "name", Value = "  John  ", Operation = FilterOperation.Equal}
+                },
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            //act — using mapping WITHOUT ValueDecorator, "  John  " won't match "John"
+            FilteryResponse<User> response = SampleList.BuildFiltery(new UserFilteryMappingsWithValueDecorator(), filteryQuery);
+
+            //assert — with decorator it matches
+            Assert.AreEqual(1, response.TotalItemCount);
+        }
     }
 }

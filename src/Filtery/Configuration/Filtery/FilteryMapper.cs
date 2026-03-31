@@ -50,7 +50,24 @@ namespace Filtery.Configuration.Filtery
                 _filteryMapper = filteryMapper;
             }
 
-            public FilterMap Filter(Expression<Func<TEntity, bool>> expression, params FilterOperation[] filterOperations )
+            public FilterMap ValueDecorator(Func<object, object> valueDecorator)
+            {
+                if (!_filteryMapper._map.ContainsKey(_name))
+                {
+                    throw new NotConfiguredFilterMappingException($"Filter configuration not found for Key: \"{_name}\"");
+                }
+
+                if (_filteryMapper._map[_name] == null)
+                {
+                    _filteryMapper._map[_name] = new FilteryMappingItem<TEntity>();
+                }
+
+                _filteryMapper._map[_name].ValueDecorator = valueDecorator;
+
+                return new FilterMap(_name, _filteryMapper);
+            }
+
+            public FilterMap Filter(Expression<Func<TEntity, bool>> expression, params FilterOperation[] filterOperations)
             {
                 if (!_filteryMapper._map.ContainsKey(_name))
                 {
@@ -61,7 +78,7 @@ namespace Filtery.Configuration.Filtery
                 {
                     throw new NotConfiguredFilterMappingException($"Filter Expression not found for Key: \"{_name}\"");
                 }
-                
+
                 if (filterOperations == null || !filterOperations.Any())
                 {
                     throw new NotConfiguredFilterMappingException($"Filter Operation not found for Key: \"{_name}\"");
@@ -91,7 +108,7 @@ namespace Filtery.Configuration.Filtery
                             throw new MultipleFilterItemConfigurationException($"Multiple filter operation '{filterOperation.ToString()}' detected for \"{_name}\"");
                         }
                     }
-                    
+
                     _filteryMapper._map[_name].FilteryMappings.Add(new FilteryMapping<TEntity> {Expression = expression, FilterOperations = filterOperations.ToList()});
                 }
 

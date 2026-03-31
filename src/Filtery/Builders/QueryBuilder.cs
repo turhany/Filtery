@@ -121,8 +121,13 @@ namespace Filtery.Builders
         {
             var mapping = mappings[filterItem.TargetFieldName.ToLower()];
 
-            var whereQuery = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation))
-                .Expression.ToString();
+            if (mapping.ValueDecorator != null)
+            {
+                filterItem.Value = mapping.ValueDecorator(filterItem.Value);
+            }
+
+            var matchedMapping = mapping.FilteryMappings.First(p => p.FilterOperations.Contains(filterItem.Operation));
+            var whereQuery = matchedMapping.Expression.ToString();
 
             var isDateTimeMarker = false;
             var isDateTimeUtcMarker = false;
