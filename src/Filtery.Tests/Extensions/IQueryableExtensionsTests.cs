@@ -3,8 +3,6 @@ using Filtery.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Text;
 using System.Threading.Tasks;
 using Filtery.Models;
 using Filtery.Models.Filter;
@@ -36,8 +34,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "John");
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
         }
         
         [TestMethod()]
@@ -58,8 +56,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "John");
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
         }
         
         [TestMethod()]
@@ -80,8 +78,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "John");
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
         }
         
         [TestMethod()]
@@ -102,8 +100,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "John");
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
         }
         
         [TestMethod()]
@@ -124,8 +122,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "John");
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
         }
         
         [TestMethod()]
@@ -146,9 +144,9 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "Alisa");
-            Assert.AreEqual(response.Data.First().Age, 18);
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("Alisa", response.Data.First().FirstName);
+            Assert.AreEqual(18, response.Data.First().Age);
         }
         
         [TestMethod()]
@@ -169,9 +167,9 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "Alisa");
-            Assert.AreEqual(response.Data.First().Age, 18);
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("Alisa", response.Data.First().FirstName);
+            Assert.AreEqual(18, response.Data.First().Age);
         }
         
         [TestMethod()]
@@ -192,8 +190,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Age, 22);
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(22, response.Data.First().Age);
         }
         
         [TestMethod()]
@@ -214,8 +212,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Age, 18);
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(18, response.Data.First().Age);
         }
         
         [TestMethod()]
@@ -236,7 +234,7 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 2);
+            Assert.AreEqual(2, response.TotalItemCount);
         }
         
         [TestMethod()]
@@ -257,7 +255,7 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 2);
+            Assert.AreEqual(2, response.TotalItemCount);
         }
         
         [TestMethod()]
@@ -278,8 +276,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Birthdate, new DateTime(1987, 06, 06)); 
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(new DateTime(1987, 06, 06), response.Data.First().Birthdate); 
         }
         
         [TestMethod()]
@@ -300,8 +298,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Birthdate, new DateTime(1987, 06, 06)); 
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(new DateTime(1987, 06, 06), response.Data.First().Birthdate); 
         }
         
         [TestMethod()]
@@ -322,8 +320,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Birthdate, new DateTime(1997, 09, 27)); 
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(new DateTime(1997, 09, 27), response.Data.First().Birthdate); 
         }
         
         [TestMethod()]
@@ -344,8 +342,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Birthdate, new DateTime(1987, 06, 06)); 
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(new DateTime(1987, 06, 06), response.Data.First().Birthdate); 
         }
         
         [TestMethod()]
@@ -366,8 +364,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Birthdate, new DateTime(1997, 09, 27)); 
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(new DateTime(1997, 09, 27), response.Data.First().Birthdate); 
         }
         
         [TestMethod()]
@@ -388,8 +386,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().Birthdate, new DateTime(1987, 06, 06)); 
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual(new DateTime(1987, 06, 06), response.Data.First().Birthdate); 
         }
         
         [TestMethod()]
@@ -411,7 +409,7 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 2);
+            Assert.AreEqual(2, response.TotalItemCount);
         }
         
         [TestMethod()]
@@ -432,7 +430,7 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 0);
+            Assert.AreEqual(0, response.TotalItemCount);
         }
         
         [TestMethod()]
@@ -453,8 +451,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "John");
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
         }
         
         [TestMethod()]
@@ -475,8 +473,8 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = await SampleQueryableList.BuildFilteryAsync(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 1);
-            Assert.AreEqual(response.Data.First().FirstName, "John");
+            Assert.AreEqual(1, response.TotalItemCount);
+            Assert.AreEqual("John", response.Data.First().FirstName);
         }
 
         [TestMethod()]
@@ -497,7 +495,7 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 2);
+            Assert.AreEqual(2, response.TotalItemCount);
         }
 
         [TestMethod()]
@@ -518,7 +516,7 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.TotalItemCount, 2);
+            Assert.AreEqual(2, response.TotalItemCount);
         }
         
         [TestMethod()]
@@ -543,7 +541,7 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.Data.First().Age, SampleQueryableList.OrderBy(p => p.Age).First().Age);
+            Assert.AreEqual(SampleQueryableList.OrderBy(p => p.Age).First().Age, response.Data.First().Age);
         }
         
         [TestMethod()]
@@ -558,7 +556,7 @@ namespace Filtery.Extensions.Tests
                 },
                 OrderOperations = new Dictionary<string, OrderOperation>()
                 {
-                    {"age", OrderOperation.Descending}  
+                    {"age", OrderOperation.Descending}
                 },
                 PageNumber = 1,
                 PageSize = 2
@@ -568,7 +566,128 @@ namespace Filtery.Extensions.Tests
             FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
 
             //assert
-            Assert.AreEqual(response.Data.First().Age, SampleQueryableList.OrderByDescending(p => p.Age).First().Age);
+            Assert.AreEqual(SampleQueryableList.OrderByDescending(p => p.Age).First().Age, response.Data.First().Age);
+        }
+
+        [TestMethod()]
+        public void BuildFiltery_MultiKey_OrderBy_Preserves_SecondarySort()
+        {
+            //arrange — 3 users: two with the same Age=18, differentiated by name
+            var list = new List<User>
+            {
+                new User { FirstName = "Zara",  Age = 18, HasDriverLicence = true, Birthdate = DateTime.Now, Id = Guid.NewGuid(), ParentNames = new List<string>() },
+                new User { FirstName = "Alice", Age = 18, HasDriverLicence = true, Birthdate = DateTime.Now, Id = Guid.NewGuid(), ParentNames = new List<string>() },
+                new User { FirstName = "Bob",   Age = 25, HasDriverLicence = true, Birthdate = DateTime.Now, Id = Guid.NewGuid(), ParentNames = new List<string>() },
+            }.AsQueryable();
+
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem { TargetFieldName = "age", Value = 0, Operation = FilterOperation.GreaterThanOrEqual }
+                },
+                OrderOperations = new Dictionary<string, OrderOperation>
+                {
+                    { "age",  OrderOperation.Ascending },
+                    { "name", OrderOperation.Ascending }
+                },
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            //act
+            FilteryResponse<User> response = list.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert — Age=18 group: Alice should come before Zara (ascending by name)
+            var expected = list.OrderBy(p => p.Age).ThenBy(p => p.FirstName).First();
+            Assert.AreEqual(expected.FirstName, response.Data.First().FirstName);
+        }
+
+        [TestMethod()]
+        public void BuildFiltery_NegativePageSize_FallsBackToDefault()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem { TargetFieldName = "age", Value = 0, Operation = FilterOperation.GreaterThanOrEqual }
+                },
+                PageNumber = 1,
+                PageSize = -5
+            };
+
+            //act
+            FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert — should return data using default page size, not empty or crash
+            Assert.AreEqual(2, response.TotalItemCount);
+            Assert.IsTrue(response.Data.Count > 0);
+        }
+
+        [TestMethod()]
+        public void BuildFiltery_ZeroPageSize_FallsBackToDefault()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem { TargetFieldName = "age", Value = 0, Operation = FilterOperation.GreaterThanOrEqual }
+                },
+                PageNumber = 1,
+                PageSize = 0
+            };
+
+            //act
+            FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert — should return data using default page size, not empty
+            Assert.AreEqual(2, response.TotalItemCount);
+            Assert.IsTrue(response.Data.Count > 0);
+        }
+
+        [TestMethod()]
+        public void BuildFiltery_TotalPageCount_CorrectCeilingDivision()
+        {
+            //arrange — 2 items, pageSize=1 → 2 pages
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem { TargetFieldName = "age", Value = 0, Operation = FilterOperation.GreaterThanOrEqual }
+                },
+                PageNumber = 1,
+                PageSize = 1
+            };
+
+            //act
+            FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert
+            Assert.AreEqual(2, response.TotalItemCount);
+            Assert.AreEqual(2, response.TotalPageCount);
+        }
+
+        [TestMethod()]
+        public void BuildFiltery_ZeroPageNumber_FallsBackToFirstPage()
+        {
+            //arrange
+            var filteryQuery = new FilteryRequest
+            {
+                AndFilters = new List<FilterItem>
+                {
+                    new FilterItem { TargetFieldName = "age", Value = 0, Operation = FilterOperation.GreaterThanOrEqual }
+                },
+                PageNumber = 0,
+                PageSize = 1
+            };
+
+            //act
+            FilteryResponse<User> response = SampleQueryableList.BuildFiltery(new UserFilteryMappings(), filteryQuery);
+
+            //assert — page 0 treated as page 1, returns first item
+            Assert.AreEqual(1, response.Data.Count);
         }
     }
 }

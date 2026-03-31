@@ -292,6 +292,12 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.30
+* Multiple order by bug fixed.  
+* Default page size set bug fixed.  
+* System.Text.Json version updated to 10.0.5 
+* Missing unit tests added 
+
 ##### 1.0.29
 * "FilteryQueryGenerateException" type added to handle query building flow exceptions.
 

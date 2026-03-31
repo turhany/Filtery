@@ -190,41 +190,54 @@ namespace Filtery.Builders
         private IEnumerable<TEntity> AddOrderOperations<TEntity>(IEnumerable<TEntity> list, FilteryRequest filteryRequest,
             Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
+            IOrderedEnumerable<TEntity> orderedList = null;
+
             foreach (var orderOperation in filteryRequest.OrderOperations)
             {
                 var propertyMapping = GetPropertyMapping(orderOperation.Key, mappings);
+                var compiled = propertyMapping.OrderExpression.Compile();
 
-                if (orderOperation.Value == OrderOperation.Ascending)
+                if (orderedList == null)
                 {
-                    list = list.OrderBy(propertyMapping.OrderExpression.Compile());
+                    orderedList = orderOperation.Value == OrderOperation.Ascending
+                        ? list.OrderBy(compiled)
+                        : list.OrderByDescending(compiled);
                 }
                 else
                 {
-                    list = list.OrderByDescending(propertyMapping.OrderExpression.Compile());
+                    orderedList = orderOperation.Value == OrderOperation.Ascending
+                        ? orderedList.ThenBy(compiled)
+                        : orderedList.ThenByDescending(compiled);
                 }
             }
 
-            return list;
+            return orderedList ?? list;
         }
 
         private IQueryable<TEntity> AddOrderOperations<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest,
             Dictionary<string, FilteryMappingItem<TEntity>> mappings)
         {
+            IOrderedQueryable<TEntity> orderedList = null;
+
             foreach (var orderOperation in filteryRequest.OrderOperations)
             {
                 var propertyMapping = GetPropertyMapping(orderOperation.Key, mappings);
 
-                if (orderOperation.Value == OrderOperation.Ascending)
+                if (orderedList == null)
                 {
-                    list = list.OrderBy(propertyMapping.OrderExpression);
+                    orderedList = orderOperation.Value == OrderOperation.Ascending
+                        ? list.OrderBy(propertyMapping.OrderExpression)
+                        : list.OrderByDescending(propertyMapping.OrderExpression);
                 }
                 else
                 {
-                    list = list.OrderByDescending(propertyMapping.OrderExpression);
+                    orderedList = orderOperation.Value == OrderOperation.Ascending
+                        ? orderedList.ThenBy(propertyMapping.OrderExpression)
+                        : orderedList.ThenByDescending(propertyMapping.OrderExpression);
                 }
             }
 
-            return list;
+            return orderedList ?? list;
         }
 
         #endregion

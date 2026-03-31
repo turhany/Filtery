@@ -4,6 +4,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Filtery.Builders;
 using Filtery.Configuration.Filtery;
+using Filtery.Constants;
 using Filtery.Models;
 using Filtery.Validators;
 // ReSharper disable InconsistentNaming
@@ -59,9 +60,9 @@ namespace Filtery.Extensions
                 pageNumber = 1;
             }
 
-            if (pageSize < 0)
+            if (pageSize <= 0)
             {
-                pageNumber = 0;
+                pageSize = FilteryConstant.DefaultPageSize;
             }
 
             pageNumber -= 1;
