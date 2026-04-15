@@ -25,14 +25,20 @@ namespace Filtery.Builders
             totalItemCount = 0;
 
             var finalExpression = BuildMainFilterQueryExpression(filteryRequest, mappings).Compile();
-            list = list.Where(finalExpression);
+            IEnumerable<TEntity> source = list.Where(finalExpression);
 
-            list = AddOrderOperations(list, filteryRequest, mappings);
+            if (filteryRequest.OrderOperations != null && filteryRequest.OrderOperations.Count > 0)
+            {
+                var filtered = source.ToList();
+                totalItemCount = filtered.Count;
+                source = AddOrderOperations(filtered, filteryRequest, mappings);
+            }
+            else
+            {
+                totalItemCount = source.Count();
+            }
 
-            totalItemCount = list.Count();
-
-            list = list.GetPage(filteryRequest.PageNumber, filteryRequest.PageSize);
-            return list;
+            return source.GetPage(filteryRequest.PageNumber, filteryRequest.PageSize);
         }
 
         internal IQueryable<TEntity> Build<TEntity>(IQueryable<TEntity> list, FilteryRequest filteryRequest,
@@ -200,7 +206,7 @@ namespace Filtery.Builders
             foreach (var orderOperation in filteryRequest.OrderOperations)
             {
                 var propertyMapping = GetPropertyMapping(orderOperation.Key, mappings);
-                var compiled = propertyMapping.OrderExpression.Compile();
+                var compiled = propertyMapping.GetCompiledOrderExpression();
 
                 if (orderedList == null)
                 {

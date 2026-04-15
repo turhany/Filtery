@@ -1,0 +1,40 @@
+using Filtery.Benchmarks.Model;
+using Filtery.Configuration.Filtery;
+using Filtery.Constants;
+using Filtery.Models.Filter;
+
+namespace Filtery.Benchmarks.Mappings
+{
+    public class UserFilteryMappings : AbstractFilteryMapping<User>
+    {
+        public UserFilteryMappings()
+        {
+            mapper
+                .Name("name")
+                .OrderProperty(p => p.FirstName)
+                .Filter(p => p.FirstName.ToLower().Equals(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Equal)
+                .Filter(p => p.FirstName.ToLower().Contains(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.Contains)
+                .Filter(p => p.FirstName.ToLower().StartsWith(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.StartsWith)
+                .Filter(p => p.FirstName.ToLower().EndsWith(FilteryQueryValueMarker.FilterStringValue.ToLower()), FilterOperation.EndsWith);
+
+            mapper
+                .Name("age")
+                .OrderProperty(p => p.Age)
+                .Filter(p => p.Age == FilteryQueryValueMarker.FilterIntValue, FilterOperation.Equal)
+                .Filter(p => p.Age > FilteryQueryValueMarker.FilterIntValue, FilterOperation.GreaterThan)
+                .Filter(p => p.Age < FilteryQueryValueMarker.FilterIntValue, FilterOperation.LessThan)
+                .Filter(p => p.Age >= FilteryQueryValueMarker.FilterIntValue, FilterOperation.GreaterThanOrEqual)
+                .Filter(p => p.Age <= FilteryQueryValueMarker.FilterIntValue, FilterOperation.LessThanOrEqual);
+
+            mapper
+                .Name("licence")
+                .OrderProperty(p => p.HasDriverLicence)
+                .Filter(p => p.HasDriverLicence == FilteryQueryValueMarker.FilterBooleanValue, FilterOperation.Equal);
+
+            mapper
+                .Name("id")
+                .OrderProperty(p => p.Id)
+                .Filter(p => p.Id == FilteryQueryValueMarker.FilterGuidValue, FilterOperation.Equal);
+        }
+    }
+}

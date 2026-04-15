@@ -294,6 +294,10 @@ Console.WriteLine(responseQueryable.TotalPageCount);
 
 ### Release Notes
 
+##### 1.0.32
+* BenchmarkDotNet projects added
+* Order expression cache added and performance increased %37 (BenchmarkDotNet result)
+
 ##### 1.0.31
 * "ValueDecorator" feature added.
 
